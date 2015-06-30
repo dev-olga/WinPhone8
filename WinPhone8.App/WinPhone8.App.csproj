@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{358b7179-0109-4c0f-a5ed-644586a4e53a}</ProjectGuid>
+    <ProjectGuid>{68c73191-90f8-4cda-ac38-dd5d7955f79f}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinPhone8</RootNamespace>
-    <AssemblyName>WinPhone8</AssemblyName>
+    <RootNamespace>WinPhone8.App</RootNamespace>
+    <AssemblyName>WinPhone8.App</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>

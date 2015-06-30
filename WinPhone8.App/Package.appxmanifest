@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="21e286b7-fb4c-47b6-959a-6353c59d63d8"
+  <Identity Name="fd94ff45-407c-4e99-8cf7-227dace81ddd"
             Publisher="CN=okulneva"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="21e286b7-fb4c-47b6-959a-6353c59d63d8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="fd94ff45-407c-4e99-8cf7-227dace81ddd" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>WinPhone8</DisplayName>
+    <DisplayName>WinPhone8.App</DisplayName>
     <PublisherDisplayName>okulneva</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -25,12 +25,12 @@
   <Applications>
     <Application Id="App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="WinPhone8.App">
+        EntryPoint="WinPhone8.App.App">
         <m3:VisualElements
-            DisplayName="WinPhone8"
+            DisplayName="WinPhone8.App"
             Square150x150Logo="Assets\Logo.png"
             Square44x44Logo="Assets\SmallLogo.png"
-            Description="WinPhone8"
+            Description="WinPhone8.App"
             ForegroundText="light"
             BackgroundColor="transparent">
             <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>
