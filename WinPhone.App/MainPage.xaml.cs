@@ -17,13 +17,16 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App
 {
+    using WinPhone.App;
+    using WinPhone.App.Common;
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
     {
         public MainPage()
-        {
+        {            
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
@@ -42,8 +45,8 @@ namespace WinPhone.App
             // handling the hardware Back button by registering for the
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
-            // this event is handled for you.
-
+            // this event is handled for you.            
+            this.Frame.Navigate(typeof(LoginPage));
 
         }
     }

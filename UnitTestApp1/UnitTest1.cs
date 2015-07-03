@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace WinPhone.MyShows.Tests
+namespace UnitTestApp1
 {
     [TestClass]
     public class UnitTest1

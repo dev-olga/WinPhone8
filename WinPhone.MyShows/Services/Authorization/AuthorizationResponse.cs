@@ -1,7 +1,10 @@
 ﻿namespace WinPhone.MyShows.Services.Authorization
 {
-    public class AuthorizationResponse
+    public enum AuthorizationResponse : int
     {
-        public string Token { get; set; }
+        OK = 1,
+        InvalidCredentials,
+        EmptyCredentials,
+        Unknown
     }
 }

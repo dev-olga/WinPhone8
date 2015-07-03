@@ -18,11 +18,12 @@
             }
         }
 
-        async protected Task<string> Read(string url)
+        async protected Task<HttpResponseMessage> Read(string url)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync(new Uri(url));
-            return await response.Content.ReadAsStringAsync();
+            return await client.GetAsync(new Uri(url));
+            //return await response.Content.ReadAsStringAsync();
         }
+
     }
 }

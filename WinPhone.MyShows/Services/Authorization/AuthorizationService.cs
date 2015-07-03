@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace WinPhone.MyShows.Services
 {
-    using System.Net.Http;
+    using System.Net;
 
+    using WinPhone.MyShows.Helpers;
     using WinPhone.MyShows.Services.Authorization;
 
     public class AuthorizationService : BaseService
@@ -22,12 +19,22 @@ namespace WinPhone.MyShows.Services
         /// The password.
         /// </param>
         /// <returns>
-        /// The token.
+        /// The response.
         /// </returns>
         async public Task<AuthorizationResponse> Authorize(string login, string password)
         {
-            var response = await this.Read(string.Format("{0}/profile/login?login={1}&password={2}", this.BaseUrl, login, password));
-            return new AuthorizationResponse { Token = response };
+            var response = await this.Read(string.Format("{0}/profile/login?login={1}&password={2}", this.BaseUrl, login, MD5Helper.GetMd5Hash(password)));
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    return AuthorizationResponse.OK;
+                case HttpStatusCode.Forbidden:
+                    return AuthorizationResponse.InvalidCredentials;
+                case HttpStatusCode.NotFound:
+                    return AuthorizationResponse.EmptyCredentials;
+                default:
+                    return AuthorizationResponse.Unknown;
+            }
         }
 
     }

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="3e4c7a75-99ff-42b1-926f-09c1c417fe4b"
+  <Identity Name="71b9b847-438e-4d9d-b55a-5b453dfdfa68"
             Publisher="CN=okulneva"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="3e4c7a75-99ff-42b1-926f-09c1c417fe4b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="71b9b847-438e-4d9d-b55a-5b453dfdfa68" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>WinPhone.MyShows.Tests</DisplayName>
+    <DisplayName>UnitTestApp1</DisplayName>
     <PublisherDisplayName>okulneva</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -25,10 +25,10 @@
         Executable="vstest.executionengine.appcontainer.exe" 
         EntryPoint="Microsoft.VisualStudio.TestPlatform.TestExecutor.AppContainer.App">
         <m3:VisualElements
-            DisplayName="WinPhone.MyShows.Tests"
+            DisplayName="UnitTestApp1"
             Square150x150Logo="Assets\Logo.png"
             Square44x44Logo="Assets\SmallLogo.png"
-            Description="WinPhone.MyShows.Tests"
+            Description="UnitTestApp1"
             ForegroundText="light"
             BackgroundColor="#464646">
             <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>
