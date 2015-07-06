@@ -20,6 +20,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App
 {
+    using WinPhone.App.Services;
+
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -91,8 +93,9 @@ namespace WinPhone.App
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                // TODO: fix
-                var isLoggedIn = false;
+
+                var authService = new AuthorizationService();
+                var isLoggedIn = authService.LogIn().Result;
                 if (isLoggedIn)
                 {
                     if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
@@ -132,11 +135,11 @@ namespace WinPhone.App
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-            // TODO: Save application state and stop any background activity
+            await Common.SuspensionManager.SaveAsync();
             deferral.Complete();
         }
     }

@@ -1,42 +1,130 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinPhone.App.ViewModels.Login
+﻿namespace WinPhone.App.ViewModels.Login
 {
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     using WinPhone.App.Common;
     using WinPhone.App.Models;
+    using WinPhone.App.Services;
 
-    public class LoginViewModel
+    public class LoginViewModel : NotificationObject
     {
+        /// <summary>
+        /// The authorize command.
+        /// </summary>
         private RelayCommand authorizeCommand;
 
-        //public LoginModel Login { get; set; }
+        /// <summary>
+        /// The error message.
+        /// </summary>
+        private string errorMessage;
 
+        private bool remember;
+
+        /// <summary>
+        /// The credentials.
+        /// </summary>
+        private readonly Credentials credentials;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
+        /// </summary>
         public LoginViewModel()
         {
-            //this.Login = new LoginModel();
+            this.credentials = new Credentials();
         }
 
-        public string Login { get; set; }
-
-        public string Password { get; set; }
-
-        public bool Remember { get; set; }
-
-        public RelayCommand UpdateNameCommand
+        public string Login
         {
             get
             {
-                return this.authorizeCommand ?? (this.authorizeCommand = new RelayCommand(this.Authorize));
+                return this.credentials.Login;
+            }
+
+            set
+            {
+                if (this.credentials.Login != value)
+                {
+                    this.credentials.Login = value;
+                    this.NotifyPropertyChanged();
+                    this.AuthorizeCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        private void Authorize()
+        public string Password
         {
-            
+            get
+            {
+                return this.credentials.Password;
+            }
+
+            set
+            {
+                if (this.credentials.Password != value)
+                {
+                    this.credentials.Password = value;
+                    this.NotifyPropertyChanged();
+                    this.AuthorizeCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool Remember
+        {
+            get
+            {
+                return this.remember;
+            }
+            set
+            {
+                if (this.remember != value)
+                {
+                    this.remember = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return this.errorMessage;
+            }
+
+            set
+            {
+                if (this.errorMessage != value)
+                {
+                    this.errorMessage = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public RelayCommand AuthorizeCommand
+        {
+            get
+            {
+                return this.authorizeCommand ?? (this.authorizeCommand = 
+                    new RelayCommand(
+                        this.Authorize, () => !string.IsNullOrEmpty(this.Login) && !string.IsNullOrEmpty(this.Password)));
+            }
+        }
+
+        private async void Authorize()
+        {
+            var res = await(new AuthorizationService()).LogIn(this.credentials, this.Remember);
+            if (res)
+            {
+                (Window.Current.Content as Frame).Navigate(typeof(MainPage));
+            }
+            else
+            {
+                this.Password = string.Empty;
+                this.ErrorMessage = "Invalid credentials.";
+            }
         }
     }
 }

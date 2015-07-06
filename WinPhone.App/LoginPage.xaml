@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    
+    xmlns:login="using:WinPhone.App.ViewModels.Login"
+    d:DataContext="{d:DesignInstance Type=login:LoginViewModel, IsDesignTimeCreatable=True}">
 
     <Grid x:Name="LayoutRoot">
 
@@ -31,13 +34,15 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <TextBox Header="Login / Email address" Grid.Row="0" Text="{Binding Login, Mode=TwoWay}"/>
-            <PasswordBox Header="Password" Grid.Row="1" Password="{Binding Login, Mode=TwoWay}"/>
-            <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remeber, Mode=TwoWay}"/>
-            <Button Content="Sign in" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Center" Command="{Binding Authorize}"></Button>
+            <TextBox Header="Login / Email address" Grid.Row="0" Text="{Binding Login, Mode=TwoWay}"></TextBox>
+            <PasswordBox Header="Password" Grid.Row="1" Password="{Binding Password, Mode=TwoWay}"/>
+            <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remember, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Grid.Row="3" Foreground="Red" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
+            <Button Content="Sign in" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center" Command="{Binding AuthorizeCommand}"></Button>
         </Grid>
     </Grid>
 </Page>
