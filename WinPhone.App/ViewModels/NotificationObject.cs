@@ -15,12 +15,5 @@
                 this.PropertyChanged(this, new PropertyChangedEventArgs(caller));
             }
         }
-
-        //protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
-        //{
-        //    var member = (MemberExpression)propertyExpression.Body;
-        //    string propertyName = member.Member.Name;
-        //    this.NotifyPropertyChanged(propertyName);
-        //}
     }
 }

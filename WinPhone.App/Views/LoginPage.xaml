@@ -1,16 +1,15 @@
 ﻿<Page
-    x:Class="WinPhone.App.LoginPage"
+    x:Class="WinPhone.App.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinPhone.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:login="using:WinPhone.App.ViewModels.Login"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    
-    xmlns:login="using:WinPhone.App.ViewModels.Login"
-    d:DataContext="{d:DesignInstance Type=login:LoginViewModel, IsDesignTimeCreatable=True}">
-
+    d:DataContext="{d:DesignInstance Type=login:LoginViewModel, IsDesignTimeCreatable=True}"
+   DataContext="{Binding Login, Source={StaticResource Locator}}">
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -42,6 +41,7 @@
             <PasswordBox Header="Password" Grid.Row="1" Password="{Binding Password, Mode=TwoWay}"/>
             <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remember, Mode=TwoWay}"/>
             <TextBlock Text="{Binding ErrorMessage}" Grid.Row="3" Foreground="Red" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
+
             <Button Content="Sign in" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center" Command="{Binding AuthorizeCommand}"></Button>
         </Grid>
     </Grid>

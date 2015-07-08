@@ -20,12 +20,15 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App
 {
+    using System.Threading.Tasks;
+
     using WinPhone.App.Services;
+    using WinPhone.App.Views;
 
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public sealed partial class App : Application
+    public sealed partial class App : Application 
     {
         private TransitionCollection transitions;
 
@@ -142,5 +145,6 @@ namespace WinPhone.App
             await Common.SuspensionManager.SaveAsync();
             deferral.Complete();
         }
+
     }
 }

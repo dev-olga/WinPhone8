@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace WinPhone.App
+namespace WinPhone.App.Views
 {
     using WinPhone.App.Common;
     using WinPhone.App.ViewModels.Login;
@@ -29,13 +29,10 @@ namespace WinPhone.App
     public sealed partial class LoginPage : Page
     {
         private NavigationHelper navigationHelper;
-        private LoginViewModel viewModel = new LoginViewModel();
 
         public LoginPage()
         {
             this.InitializeComponent();
-
-            this.DataContext = this.ViewModel;
             
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -48,15 +45,6 @@ namespace WinPhone.App
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
-        }
-
-        /// <summary>
-        /// Gets the view model for this <see cref="Page"/>.
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public LoginViewModel ViewModel
-        {
-            get { return this.viewModel; }
         }
 
         /// <summary>

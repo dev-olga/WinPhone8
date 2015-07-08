@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
-namespace WinPhone.App
+namespace WinPhone.App.Views
 {
     using WinPhone.App;
     using WinPhone.App.Common;

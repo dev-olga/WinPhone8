@@ -2,6 +2,8 @@
 
 namespace WinPhone.App.Services.Authorization
 {
+    using System;
+
     using Windows.Security.Credentials;
 
     using WinPhone.App.Models;
@@ -30,10 +32,17 @@ namespace WinPhone.App.Services.Authorization
         public void Clear()
         {
             var vault = new PasswordVault();
-            var credentialsList = vault.FindAllByResource(this.Resource);
-            foreach (var item in credentialsList)
+            try
             {
-                vault.Remove(item);
+                var credentialsList = vault.FindAllByResource(this.Resource);
+                foreach (var item in credentialsList)
+                {
+                    vault.Remove(item);
+                }
+            }
+            catch (Exception)
+            {
+                
             }
         }
     }

@@ -4,15 +4,20 @@
     using Windows.UI.Xaml.Controls;
 
     using WinPhone.App.Common;
+    using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services;
 
-    public class LoginViewModel : NotificationObject
+    using WinPhone.App.Views;
+
+    public class LoginViewModel : NotificationObject 
     {
         /// <summary>
         /// The authorize command.
         /// </summary>
         private RelayCommand authorizeCommand;
+
+        private readonly IAuthorizationService AuthorizationService;
 
         /// <summary>
         /// The error message.
@@ -29,9 +34,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
         /// </summary>
-        public LoginViewModel()
+        public LoginViewModel(IAuthorizationService authorizationService)
         {
             this.credentials = new Credentials();
+            this.AuthorizationService = authorizationService;
         }
 
         public string Login
@@ -107,15 +113,18 @@
         {
             get
             {
-                return this.authorizeCommand ?? (this.authorizeCommand = 
-                    new RelayCommand(
-                        this.Authorize, () => !string.IsNullOrEmpty(this.Login) && !string.IsNullOrEmpty(this.Password)));
+                return this.authorizeCommand ?? (this.authorizeCommand = new RelayCommand(this.Authorize, this.IsValid));
             }
+        }
+
+        private bool IsValid()
+        {
+            return !string.IsNullOrEmpty(this.Login) && !string.IsNullOrEmpty(this.Password);
         }
 
         private async void Authorize()
         {
-            var res = await(new AuthorizationService()).LogIn(this.credentials, this.Remember);
+            var res = await this.AuthorizationService.LogIn(this.credentials, this.Remember);
             if (res)
             {
                 (Window.Current.Content as Frame).Navigate(typeof(MainPage));

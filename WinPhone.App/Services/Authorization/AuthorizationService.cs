@@ -2,15 +2,18 @@
 
 namespace WinPhone.App.Services
 {
+    using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services.Authorization;
     using WinPhone.MyShows.Services.Authorization;
 
-    public class AuthorizationService
+    public class AuthorizationService : IAuthorizationService
     {
         //ToDo: move to model
 
-        private static bool IsLoggedIn = false;
+        private static User User { get; set; }
+
+        private static bool IsLoggedIn { get; set; }
 
         /// <summary>
         /// The credentials storage.
