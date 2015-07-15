@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App
 {
+    using System.Threading;
     using System.Threading.Tasks;
 
     using WinPhone.App.Services;
@@ -97,20 +98,28 @@ namespace WinPhone.App
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-                var authService = new AuthorizationService();
-                var isLoggedIn = authService.LogIn().Result;
+                var isLoggedIn = false;
+                try
+                {
+                    isLoggedIn = Task.Run(() => (new AuthorizationService()).LogInAsync()).Result;
+                }
+                catch (Exception ex)
+                {
+                    //TODO: log exception
+                }
+
                 if (isLoggedIn)
                 {
                     if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
                     {
-                        throw new Exception("Failed to create initial page");
+                        throw new Exception("Failed to create Main page");
                     }
                 }
                 else
                 {
                     if (!rootFrame.Navigate(typeof(LoginPage), e.Arguments))
                     {
-                        throw new Exception("Failed to create initial page");
+                        throw new Exception("Failed to create Login page");
                     }
                 }
             }

@@ -2,14 +2,22 @@
 
 namespace WinPhone.App.Services.Authorization
 {
-    using System;
-
     using Windows.Security.Credentials;
 
     using WinPhone.App.Models;
 
     internal class CredentialsStorage
     {
+        private PasswordVault passwordVault;
+
+        private PasswordVault PasswordVault
+        {
+            get
+            {
+                return this.passwordVault ?? (this.passwordVault = new PasswordVault());
+            }
+        }
+
         private string Resource
         {
             get
@@ -20,29 +28,31 @@ namespace WinPhone.App.Services.Authorization
 
         public void Save(Credentials credentials)
         {
-            (new PasswordVault()).Add(new PasswordCredential(this.Resource, credentials.Login, credentials.Password));
+            this.PasswordVault.Add(new PasswordCredential(this.Resource, credentials.Login, credentials.Password));
         }
 
         public Credentials Get()
         {
-            var passwordCredentials = (new PasswordVault()).FindAllByResource(this.Resource).FirstOrDefault();
-            return passwordCredentials == null ? null : new Credentials { Login = passwordCredentials.UserName, Password = passwordCredentials.Password };
+            var сredentials =
+                this.PasswordVault.RetrieveAll().FirstOrDefault(r => r.Resource.Equals(this.Resource));
+            if (сredentials == null)
+            {
+                return null;
+            }
+
+            сredentials = this.PasswordVault.Retrieve(сredentials.Resource, сredentials.UserName);
+            return new Credentials
+                        {
+                            Login = сredentials.UserName,
+                            Password = сredentials.Password
+                        };
         }
 
         public void Clear()
         {
-            var vault = new PasswordVault();
-            try
+            foreach (var item in this.PasswordVault.RetrieveAll().Where(r => r.Resource.Equals(this.Resource)))
             {
-                var credentialsList = vault.FindAllByResource(this.Resource);
-                foreach (var item in credentialsList)
-                {
-                    vault.Remove(item);
-                }
-            }
-            catch (Exception)
-            {
-                
+                this.PasswordVault.Remove(item);
             }
         }
     }

@@ -6,30 +6,35 @@
     using WinPhone.App.Common;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
-    using WinPhone.App.Services;
 
     using WinPhone.App.Views;
 
     public class LoginViewModel : NotificationObject 
     {
+
+        /// <summary>
+        /// The credentials.
+        /// </summary>
+        private readonly Credentials credentials;
+
+        private readonly IAuthorizationService authorizationService;
+
         /// <summary>
         /// The authorize command.
         /// </summary>
         private RelayCommand authorizeCommand;
-
-        private readonly IAuthorizationService AuthorizationService;
 
         /// <summary>
         /// The error message.
         /// </summary>
         private string errorMessage;
 
+        /// <summary>
+        /// The remember flag.
+        /// </summary>
         private bool remember;
 
-        /// <summary>
-        /// The credentials.
-        /// </summary>
-        private readonly Credentials credentials;
+        private bool processing;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
@@ -37,9 +42,10 @@
         public LoginViewModel(IAuthorizationService authorizationService)
         {
             this.credentials = new Credentials();
-            this.AuthorizationService = authorizationService;
+            this.authorizationService = authorizationService;
         }
 
+        #region Properties
         public string Login
         {
             get
@@ -109,13 +115,41 @@
             }
         }
 
+        public bool Processing
+        {
+            get
+            {
+                return this.processing;
+            }
+            set
+            {
+                if (this.processing != value)
+                {
+                    this.processing = value;
+                    this.NotifyPropertyChanged();
+                    this.AuthorizeCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
         public RelayCommand AuthorizeCommand
         {
             get
             {
-                return this.authorizeCommand ?? (this.authorizeCommand = new RelayCommand(this.Authorize, this.IsValid));
+                return this.authorizeCommand ?? (this.authorizeCommand = new RelayCommand(this.Authorize, () => this.IsValid() && !this.Processing));
             }
         }
+
+        /// <summary>
+        /// Gets the authorization service.
+        /// </summary>
+        private IAuthorizationService AuthorizationService
+        {
+            get
+            {
+                return this.authorizationService;
+            }
+        }
+        #endregion
 
         private bool IsValid()
         {
@@ -124,7 +158,8 @@
 
         private async void Authorize()
         {
-            var res = await this.AuthorizationService.LogIn(this.credentials, this.Remember);
+            this.Processing = true;
+            var res = await this.AuthorizationService.LogInAsync(this.credentials, this.Remember);
             if (res)
             {
                 (Window.Current.Content as Frame).Navigate(typeof(MainPage));
@@ -134,6 +169,7 @@
                 this.Password = string.Empty;
                 this.ErrorMessage = "Invalid credentials.";
             }
+            this.Processing = false;
         }
     }
 }

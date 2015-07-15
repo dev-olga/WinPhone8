@@ -8,11 +8,14 @@ namespace WinPhone.App.Models
 {
     public class User
     {
-        public string UserName
+        public User(string userName)
         {
-            get; set; 
+            this.UserName = userName;
         }
 
-        public bool IsLoggedIn { get; set; }
+        public string UserName
+        {
+            get; private set; 
+        }
     }
 }

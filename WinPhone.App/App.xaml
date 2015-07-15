@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinPhone.App"
     xmlns:viewModels="using:WinPhone.App.ViewModels"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008&quot;">
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008&quot;"
+    xmlns:converters="using:WinPhone.App.Common.Converters">
 
     <Application.Resources>
         <viewModels:ViewModelLocator x:Key="Locator"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </Application.Resources>
 </Application>

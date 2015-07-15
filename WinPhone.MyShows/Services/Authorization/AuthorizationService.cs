@@ -21,9 +21,9 @@ namespace WinPhone.MyShows.Services
         /// <returns>
         /// The response.
         /// </returns>
-        async public Task<AuthorizationResponse> Authorize(string login, string password)
+        async public Task<AuthorizationResponse> AuthorizeAsync(string login, string password)
         {
-            var response = await this.Read(string.Format("{0}/profile/login?login={1}&password={2}", this.BaseUrl, login, MD5Helper.GetMd5Hash(password)));
+            var response = await this.ReadAsync(string.Format("{0}/profile/login?login={1}&password={2}", this.BaseUrl, login, MD5Helper.GetMd5Hash(password)));
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:

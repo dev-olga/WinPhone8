@@ -10,6 +10,7 @@ namespace WinPhone.MyShows.Tests.MyShows.Services
 
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
+    using WinPhone.App.Models;
     using WinPhone.MyShows.Services;
 
     [TestClass]
@@ -19,9 +20,21 @@ namespace WinPhone.MyShows.Tests.MyShows.Services
         public void AuthorizeTests()
         {
             var service = new AuthorizationService();
-            var task = service.Authorize("_nuit", "test");
+            var task = service.AuthorizeAsync("_nuit", "test");
             task.Wait();
             var res = task.Result;
         }
+
+
+        //[TestMethod]
+        //public void AuthorizeTests1()
+        //{
+        //    var service = new WinPhone.App.Services.AuthorizationService();
+        //    var task = service.LogInAsync(new Credentials() { Login = "_nuit", Password = "test" }, true);
+        //    task.Wait();
+        //    var res = task.Result;
+
+
+        //}
     }
 }

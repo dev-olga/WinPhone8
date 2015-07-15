@@ -2,6 +2,8 @@
 
 namespace WinPhone.App.Services
 {
+    using System;
+
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services.Authorization;
@@ -9,17 +11,30 @@ namespace WinPhone.App.Services
 
     public class AuthorizationService : IAuthorizationService
     {
-        //ToDo: move to model
-
-        private static User User { get; set; }
-
-        private static bool IsLoggedIn { get; set; }
-
         /// <summary>
         /// The credentials storage.
         /// </summary>
         private CredentialsStorage credentialsStorage;
 
+        /// <summary>
+        /// Gets the user.
+        /// </summary>
+        public User User { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether user is logged in.
+        /// </summary>
+        public bool IsLoggedIn
+        {
+            get
+            {
+                return this.User != null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the credentials storage.
+        /// </summary>
         private CredentialsStorage CredentialsStorage
         {
             get
@@ -28,36 +43,42 @@ namespace WinPhone.App.Services
             }
         }
 
-        public async Task<bool> LogIn(Credentials credentials, bool remember = false)
+        public async Task<bool> LogInAsync(Credentials credentials, bool remember = false)
         {
-            this.LogOut();
+            this.User = null;
 
-            var resp = await(new MyShows.Services.AuthorizationService()).Authorize(credentials.Login, credentials.Password);
-            IsLoggedIn = resp == AuthorizationResponse.OK;
-            if (IsLoggedIn && remember)
+            var resp = await (new MyShows.Services.AuthorizationService()).AuthorizeAsync(
+                        credentials.Login,
+                        credentials.Password);
+
+            if (resp == AuthorizationResponse.OK)
             {
-                this.CredentialsStorage.Save(credentials);
+                this.User = new User(credentials.Login);
+
+                if (remember)
+                {
+                    this.CredentialsStorage.Save(credentials);
+                }
             }
 
-            return IsLoggedIn;
+            return this.IsLoggedIn;
         }
 
-        public async Task<bool> LogIn()
+        public async Task<bool> LogInAsync()
         {
-            return false;
-            //var credentials = this.CredentialsStorage.Get();
-            //if (credentials == null)
-            //{
-            //    IsLoggedIn = false;
-            //    return IsLoggedIn;
-            //}
+            var credentials = this.CredentialsStorage.Get();
+            if (credentials != null)
+            {
+                return await this.LogInAsync(credentials, true);
+            }
 
-            //return await this.LogIn(credentials, true);
+            this.User = null;
+            return false;
         }
 
         public void LogOut()
         {
-            IsLoggedIn = false;
+            this.User = null;
             this.CredentialsStorage.Clear();
         }
     }

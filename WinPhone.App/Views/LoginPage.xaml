@@ -36,10 +36,13 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <TextBox Header="Login / Email address" Grid.Row="0" Text="{Binding Login, Mode=TwoWay}"></TextBox>
-            <PasswordBox Header="Password" Grid.Row="1" Password="{Binding Password, Mode=TwoWay}"/>
-            <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remember, Mode=TwoWay}"/>
+
+            <TextBox Header="Login / Email address" Grid.Row="0" Text="{Binding Login, Mode=TwoWay}" 
+                     IsEnabled="{Binding Path=Processing, Converter={StaticResource InverseBooleanConverter}}" />
+            <PasswordBox Header="Password" Grid.Row="1" Password="{Binding Password, Mode=TwoWay}"
+                         IsEnabled="{Binding Path=Processing, Converter={StaticResource InverseBooleanConverter}}"/>
+            <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remember, Mode=TwoWay}"
+                      IsEnabled="{Binding Path=Processing, Converter={StaticResource InverseBooleanConverter}}"/>
             <TextBlock Text="{Binding ErrorMessage}" Grid.Row="3" Foreground="Red" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
 
             <Button Content="Sign in" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center" Command="{Binding AuthorizeCommand}"></Button>

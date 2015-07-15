@@ -19,6 +19,7 @@ namespace WinPhone.App.Views
 {
     using WinPhone.App;
     using WinPhone.App.Common;
+    using WinPhone.App.Services;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -30,6 +31,8 @@ namespace WinPhone.App.Views
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
+
+            var tmp = (new AuthorizationService()).IsLoggedIn;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace WinPhone.App.Views
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.            
-            this.Frame.Navigate(typeof(LoginPage));
+           // this.Frame.Navigate(typeof(LoginPage));
 
         }
     }
