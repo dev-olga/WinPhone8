@@ -17,5 +17,11 @@ namespace WinPhone.App.Models
         {
             get; private set; 
         }
+
+        public string AuthorizationToken
+        {
+            get;
+            set;
+        }
     }
 }

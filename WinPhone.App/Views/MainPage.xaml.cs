@@ -31,8 +31,6 @@ namespace WinPhone.App.Views
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
-            var tmp = (new AuthorizationService()).IsLoggedIn;
         }
 
         /// <summary>

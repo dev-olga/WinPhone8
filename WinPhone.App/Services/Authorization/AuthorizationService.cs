@@ -7,7 +7,7 @@ namespace WinPhone.App.Services
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services.Authorization;
-    using WinPhone.MyShows.Services.Authorization;
+    using WinPhone.MyShows.Models.Authorization;
 
     public class AuthorizationService : IAuthorizationService
     {
@@ -19,7 +19,7 @@ namespace WinPhone.App.Services
         /// <summary>
         /// Gets the user.
         /// </summary>
-        public User User { get; private set; }
+        public static User User { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether user is logged in.
@@ -28,7 +28,7 @@ namespace WinPhone.App.Services
         {
             get
             {
-                return this.User != null;
+                return User != null;
             }
         }
 
@@ -45,15 +45,18 @@ namespace WinPhone.App.Services
 
         public async Task<bool> LogInAsync(Credentials credentials, bool remember = false)
         {
-            this.User = null;
+            User = null;
 
-            var resp = await (new MyShows.Services.AuthorizationService()).AuthorizeAsync(
+            var resp = await(new MyShows.Services.AuthorizationService()).AuthorizeAsync(
                         credentials.Login,
                         credentials.Password);
 
-            if (resp == AuthorizationResponse.OK)
+            if (resp.Code == AuthorizationCode.OK)
             {
-                this.User = new User(credentials.Login);
+                User = new User(credentials.Login)
+                           {
+                               AuthorizationToken = resp.Token
+                           };
 
                 if (remember)
                 {
@@ -72,13 +75,13 @@ namespace WinPhone.App.Services
                 return await this.LogInAsync(credentials, true);
             }
 
-            this.User = null;
+            User = null;
             return false;
         }
 
         public void LogOut()
         {
-            this.User = null;
+            User = null;
             this.CredentialsStorage.Clear();
         }
     }

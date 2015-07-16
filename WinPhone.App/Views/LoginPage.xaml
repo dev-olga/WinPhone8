@@ -34,6 +34,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -44,8 +45,11 @@
             <CheckBox Content="Remember me"  Grid.Row="2" IsChecked="{Binding Remember, Mode=TwoWay}"
                       IsEnabled="{Binding Path=Processing, Converter={StaticResource InverseBooleanConverter}}"/>
             <TextBlock Text="{Binding ErrorMessage}" Grid.Row="3" Foreground="Red" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
-
+            
             <Button Content="Sign in" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center" Command="{Binding AuthorizeCommand}"></Button>
+            <ProgressRing Grid.Row="5" Height="25" Width="25" IsActive="True" Visibility="{Binding Path=Processing, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
+
+
         </Grid>
     </Grid>
 </Page>

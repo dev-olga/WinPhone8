@@ -8,10 +8,30 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel>
-        <TextBlock Text="Test"></TextBlock>
-    </StackPanel>
-    <!--<Grid>
-
-    </Grid>-->
+    <Pivot >
+        <PivotItem Header="My Shows">
+            <StackPanel>
+                <TextBlock Text="page1"></TextBlock>
+            </StackPanel>
+        </PivotItem>
+        <PivotItem Header="Suggections">
+            <StackPanel>
+                <TextBlock Text="page2"></TextBlock>
+            </StackPanel>
+        </PivotItem>
+        <PivotItem Header="My Profile">
+            <StackPanel>
+                <TextBlock Text="page3"></TextBlock>
+            </StackPanel>
+        </PivotItem>
+    </Pivot>
+   
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Logoff" Command="{Binding LogOutCommand, Source={StaticResource Locator}}"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        
+    </Page.BottomAppBar>
 </Page>

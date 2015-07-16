@@ -1,8 +1,6 @@
-﻿namespace WinPhone.App.Common
+﻿namespace WinPhone.App.ViewModels
 {
-    using System;
     using System.ComponentModel;
-    using System.Linq.Expressions;
 
     public class NotificationObject : INotifyPropertyChanged
     {

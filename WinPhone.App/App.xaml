@@ -10,5 +10,6 @@
     <Application.Resources>
         <viewModels:ViewModelLocator x:Key="Locator"/>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Application.Resources>
 </Application>

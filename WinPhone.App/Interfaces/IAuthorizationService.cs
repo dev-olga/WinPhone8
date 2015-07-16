@@ -11,5 +11,7 @@ namespace WinPhone.App.Interfaces
         Task<bool> LogInAsync();
 
         void LogOut();
+
+        bool IsLoggedIn { get; }
     }
 }

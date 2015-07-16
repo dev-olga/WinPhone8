@@ -9,15 +9,13 @@
 
     using WinPhone.App.Views;
 
-    public class LoginViewModel : NotificationObject 
+    public class LoginViewModel : AuthorizedViewModel 
     {
 
         /// <summary>
         /// The credentials.
         /// </summary>
         private readonly Credentials credentials;
-
-        private readonly IAuthorizationService authorizationService;
 
         /// <summary>
         /// The authorize command.
@@ -39,10 +37,13 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
         /// </summary>
+        /// <param name="authorizationService">
+        /// The authorization Service.
+        /// </param>
         public LoginViewModel(IAuthorizationService authorizationService)
+            : base(authorizationService)
         {
-            this.credentials = new Credentials();
-            this.authorizationService = authorizationService;
+            this.credentials = new Credentials();            
         }
 
         #region Properties
@@ -131,6 +132,7 @@
                 }
             }
         }
+
         public RelayCommand AuthorizeCommand
         {
             get
@@ -139,16 +141,6 @@
             }
         }
 
-        /// <summary>
-        /// Gets the authorization service.
-        /// </summary>
-        private IAuthorizationService AuthorizationService
-        {
-            get
-            {
-                return this.authorizationService;
-            }
-        }
         #endregion
 
         private bool IsValid()

@@ -9,7 +9,7 @@
         /// <summary>
         /// Gets the base url.
         /// </summary>
-        protected string BaseUrl
+        private string BaseUrl
         {
             get
             {
@@ -18,11 +18,26 @@
             }
         }
 
-        async protected Task<HttpResponseMessage> ReadAsync(string url)
+        async protected Task<HttpResponseMessage> GetAsync(string url)
         {
-            var client = new HttpClient();
-            return await client.GetAsync(new Uri(url));
-            //return await response.Content.ReadAsStringAsync();
+            using (var client = new HttpClient() { BaseAddress = new Uri(this.BaseUrl) })
+            {
+                var message = new HttpRequestMessage(HttpMethod.Get, url);
+                return await client.SendAsync(message);
+            }
+        }
+
+        async protected Task<HttpResponseMessage> GetAsync(string url, string token)
+        {
+            using (var handler = new HttpClientHandler { UseCookies = true })
+            {
+                using (var client = new HttpClient(handler) { BaseAddress = new Uri(this.BaseUrl) })
+                {
+                    var message = new HttpRequestMessage(HttpMethod.Get, url);
+                    message.Headers.Add("Cookie", token);
+                    return await client.SendAsync(message);
+                }
+            }
         }
     }
 }
