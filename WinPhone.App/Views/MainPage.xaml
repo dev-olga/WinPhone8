@@ -5,13 +5,16 @@
     xmlns:local="using:WinPhone.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:main="using:WinPhone.App.ViewModels.Main"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance Type=main:MainViewModel, IsDesignTimeCreatable=True}"
+   DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Pivot >
         <PivotItem Header="My Shows">
             <StackPanel>
-                <TextBlock Text="page1"></TextBlock>
+                <ListView DataContext="{Binding MyShows}"></ListView>
             </StackPanel>
         </PivotItem>
         <PivotItem Header="Suggections">

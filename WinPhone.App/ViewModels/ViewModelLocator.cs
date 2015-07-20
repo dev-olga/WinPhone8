@@ -16,6 +16,7 @@ namespace WinPhone.App.ViewModels
     using WinPhone.App.Interfaces;
     using WinPhone.App.Services;
     using WinPhone.App.ViewModels.Login;
+    using WinPhone.App.ViewModels.Main;
 
     public class ViewModelLocator
     {
@@ -27,6 +28,14 @@ namespace WinPhone.App.ViewModels
             }
         }
 
+        public MainViewModel Main
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+        
         public LogOutCommand LogOutCommand
         {
             get
@@ -44,6 +53,7 @@ namespace WinPhone.App.ViewModels
             SimpleIoc.Default.Register<IAuthorizationService>(() => authorizationService, true);
 
             SimpleIoc.Default.Register<LoginViewModel>(() => new LoginViewModel(authorizationService));
+            SimpleIoc.Default.Register<MainViewModel>(() => new MainViewModel(authorizationService));
 
             SimpleIoc.Default.Register<LogOutCommand>(() => new LogOutCommand(authorizationService));
         }

@@ -13,5 +13,7 @@ namespace WinPhone.App.Interfaces
         void LogOut();
 
         bool IsLoggedIn { get; }
+
+        User User { get; }
     }
 }

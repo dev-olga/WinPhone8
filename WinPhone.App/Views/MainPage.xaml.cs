@@ -17,9 +17,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App.Views
 {
+    using System.Collections.ObjectModel;
+
     using WinPhone.App;
     using WinPhone.App.Common;
     using WinPhone.App.Services;
+    using WinPhone.App.ViewModels;
+    using WinPhone.App.ViewModels.Main;
+    using WinPhone.MyShows.Models.Profile;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -38,16 +43,20 @@ namespace WinPhone.App.Views
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             // TODO: Prepare page for display here.
+            if (this.DataContext is ILoadDataAsync)
+            {
+                await(this.DataContext as ILoadDataAsync).LoadData();
+            }
 
             // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.            
-           // this.Frame.Navigate(typeof(LoginPage));
+            // this.Frame.Navigate(typeof(LoginPage));
 
         }
     }

@@ -2,7 +2,7 @@
 {
     using System.ComponentModel;
 
-    public class NotificationObject : INotifyPropertyChanged
+    public class NotificationViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

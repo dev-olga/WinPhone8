@@ -8,7 +8,7 @@ namespace WinPhone.App.ViewModels
 {
     using WinPhone.App.Interfaces;
 
-    public class AuthorizedViewModel : NotificationObject
+    public class AuthorizedViewModel : NotificationViewModel
     {
         private readonly IAuthorizationService authorizationService;
 

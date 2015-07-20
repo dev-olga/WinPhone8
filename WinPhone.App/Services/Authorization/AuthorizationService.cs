@@ -16,10 +16,33 @@ namespace WinPhone.App.Services
         /// </summary>
         private CredentialsStorage credentialsStorage;
 
+        private MyShows.Services.AuthorizationService apiService;
+
+        protected MyShows.Services.AuthorizationService ApiService
+        {
+            get
+            {
+                return this.apiService ?? (this.apiService = new MyShows.Services.AuthorizationService());
+            }
+        }
+
+        private static User user;
+
         /// <summary>
         /// Gets the user.
         /// </summary>
-        public static User User { get; private set; }
+        public User User
+        {
+            get
+            {
+                return user;
+            }
+
+            private set
+            {
+                user = value;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether user is logged in.
@@ -47,7 +70,7 @@ namespace WinPhone.App.Services
         {
             User = null;
 
-            var resp = await(new MyShows.Services.AuthorizationService()).AuthorizeAsync(
+            var resp = await this.ApiService.AuthorizeAsync(
                         credentials.Login,
                         credentials.Password);
 
