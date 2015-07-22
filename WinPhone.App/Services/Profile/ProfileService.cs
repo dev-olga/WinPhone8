@@ -3,22 +3,22 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
+    using WinPhone.App.Interfaces;
     using WinPhone.MyShows.Models.Profile;
 
-    public class ProfileService
+    internal class ProfileService : IProfileService
     {
         private MyShows.Services.ProfileService apiService;
 
-        private OfflineManager offlineManager;
+        private readonly OfflineManager offlineManager;
 
         private enum OfflineDataKeys
         {
             Profile,
             Shows
         }
-        
+
         protected MyShows.Services.ProfileService ApiService
         {
             get
@@ -31,24 +31,52 @@
         {
             get
             {
-                return this.offlineManager ?? (this.offlineManager = new OfflineManager(typeof(ProfileService).FullName));
+                return this.offlineManager;
             }
         }
 
+        public ProfileService(IStorage offlineStorage)
+        {
+            this.offlineManager = new OfflineManager(offlineStorage);
+        }
+
+        /// <summary>
+        /// Gets user's shows async.
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         public async Task<List<UserShow>> GetUserShowsAsync(string token)
         {
-            List<UserShow> shows;
-            if (InternetHelper.IsNetworkAvailable())
-            {
-                shows = await this.ApiService.GetUserShowsAsync(token);
-               // this.OfflineManager.Save(OfflineDataKeys.Shows.ToString(), shows);
-            }
-            else
-            {
-                shows = this.OfflineManager.Get<List<UserShow>>(OfflineDataKeys.Shows.ToString());
-            }
-            
-            return shows;
+            return await this.ApiService.GetUserShowsAsync(token);
+        }
+
+        /// <summary>
+        /// Gets user's shows from local storage async.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public async Task<List<UserShow>> GetUserShowsOfflineAsync()
+        {
+            return await this.OfflineManager.GetAsync<List<UserShow>>(OfflineDataKeys.Shows);
+        }
+
+        /// <summary>
+        /// Saves user shows into the local storage async.
+        /// </summary>
+        /// <param name="shows">
+        /// The list of shows.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public async Task SaveUserShowsOfflineAsync(List<UserShow> shows)
+        {
+            await this.OfflineManager.SaveAsync(OfflineDataKeys.Shows, shows);
         }
     }
 }

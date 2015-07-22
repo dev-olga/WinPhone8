@@ -4,7 +4,7 @@ namespace WinPhone.App.Interfaces
 {
     using WinPhone.App.Models;
 
-    public interface IAuthorizationService
+    internal interface IAuthorizationService
     {
         Task<bool> LogInAsync(Credentials credentials, bool remember = false);
 

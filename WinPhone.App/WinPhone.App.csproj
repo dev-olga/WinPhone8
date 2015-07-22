@@ -95,11 +95,13 @@
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
+    <Compile Include="Common\Offline\IStorage..cs" />
     <Compile Include="Common\Offline\OfflineManager.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
-    <Compile Include="Common\Offline\OfflineStorage.cs" />
+    <Compile Include="Common\Offline\LocalStorage.cs" />
+    <Compile Include="Interfaces\IProfileService.cs" />
     <Compile Include="Services\Profile\ProfileService.cs" />
     <Compile Include="Services\Shows\ShowsService.cs" />
     <Compile Include="ViewModels\AuthorizedViewModel.cs" />
@@ -114,7 +116,7 @@
     </Compile>
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="ViewModels\NotificationObject.cs" />
+    <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Authorization\AuthorizationService.cs" />
     <Compile Include="Services\Authorization\CredentialsStorage.cs" />

@@ -9,7 +9,7 @@
 
     using WinPhone.App.Views;
 
-    public class LoginViewModel : AuthorizedViewModel 
+    internal class LoginViewModel : AuthorizedViewModel 
     {
 
         /// <summary>

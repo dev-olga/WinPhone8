@@ -1,40 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WinPhone.App.Common.Offline
 {
+    using System.IO;
+    using System.Runtime.Serialization;
+    using System.Threading.Tasks;
+
     using Windows.Storage;
 
-    using WinPhone.App.Services.Offline;
 
     internal class OfflineManager
     {
-        private readonly ApplicationDataContainer offlineContainer;
+        private readonly IStorage storage;
 
-        private ApplicationDataContainer OfflineContainer
+        private IStorage Storage
         {
             get
             {
-                return this.offlineContainer;
+                return this.storage;
             }
         }
 
-        public OfflineManager(string storageKey)
+        public OfflineManager(IStorage storage)
         {
-            this.offlineContainer = new OfflineStorage().GetContainer(storageKey);
+            this.storage = storage;
         }
 
-        public T Get<T>(string key)
+        public async Task<T> GetAsync<T>(Enum key)
         {
-            return this.OfflineContainer.Values.ContainsKey(key) ? (T)this.OfflineContainer.Values[key] : default(T);
+            var serializer = new DataContractSerializer(typeof(T));
+            using (var stream =
+                    await this.Storage.GetStorage().OpenStreamForReadAsync(this.GetKeyName(key)))
+            {
+                //using (var reader = new StreamReader(stream))
+                //{
+                //    var content = await reader.ReadToEndAsync();
+                    
+                //}
+                return (T)serializer.ReadObject(stream);
+            }
         }
 
-        public void Save<T>(string key, T value)
+        public async Task SaveAsync<T>(Enum key, T value)
         {
-            this.OfflineContainer.Values[key] = value;
+            var serializer = new DataContractSerializer(typeof(T));
+            using (
+                var stream =
+                    await
+                    this.Storage.GetStorage()
+                        .OpenStreamForWriteAsync(this.GetKeyName(key), CreationCollisionOption.ReplaceExisting))
+            {
+                serializer.WriteObject(stream, value);
+            }
+        }
+
+        public void Clear()
+        {
+            
+        }
+
+
+        private string GetKeyName(Enum key)
+        {
+            return String.Format("{0}.{1}", key.GetType().FullName, key);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace WinPhone.App.Common.Commands
     using WinPhone.App.Interfaces;
     using WinPhone.App.Views;
 
-    public class LogOutCommand : ICommand
+    internal class LogOutCommand : ICommand
     {
         private readonly IAuthorizationService authorizationService;
 

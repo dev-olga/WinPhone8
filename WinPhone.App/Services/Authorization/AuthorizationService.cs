@@ -4,6 +4,7 @@ namespace WinPhone.App.Services
 {
     using System;
 
+    using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services.Authorization;
@@ -18,14 +19,11 @@ namespace WinPhone.App.Services
 
         private MyShows.Services.AuthorizationService apiService;
 
-        protected MyShows.Services.AuthorizationService ApiService
-        {
-            get
-            {
-                return this.apiService ?? (this.apiService = new MyShows.Services.AuthorizationService());
-            }
-        }
+        private readonly OfflineManager offlineManager;
 
+        /// <summary>
+        /// The user.
+        /// </summary>
         private static User user;
 
         /// <summary>
@@ -64,6 +62,27 @@ namespace WinPhone.App.Services
             {
                 return this.credentialsStorage ?? (this.credentialsStorage = new CredentialsStorage());
             }
+        }
+
+        private MyShows.Services.AuthorizationService ApiService
+        {
+            get
+            {
+                return this.apiService ?? (this.apiService = new MyShows.Services.AuthorizationService());
+            }
+        }
+
+        private OfflineManager OfflineManager
+        {
+            get
+            {
+                return this.offlineManager;
+            }
+        }
+
+        public AuthorizationService(IStorage offlineStorage)
+        {
+            this.offlineManager = new OfflineManager(offlineStorage);
         }
 
         public async Task<bool> LogInAsync(Credentials credentials, bool remember = false)
@@ -106,6 +125,7 @@ namespace WinPhone.App.Services
         {
             User = null;
             this.CredentialsStorage.Clear();
+            this.OfflineManager.Clear();
         }
     }
 }

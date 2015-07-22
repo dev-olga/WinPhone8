@@ -13,12 +13,14 @@ namespace WinPhone.App.ViewModels
     using Microsoft.Practices.ServiceLocation;
 
     using WinPhone.App.Common.Commands;
+    using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Services;
     using WinPhone.App.ViewModels.Login;
     using WinPhone.App.ViewModels.Main;
+    using WinPhone.App.Services.Profile;
 
-    public class ViewModelLocator
+    internal class ViewModelLocator
     {
         public LoginViewModel Login
         {
@@ -48,12 +50,16 @@ namespace WinPhone.App.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            var authorizationService = new AuthorizationService();
+            var offlineStorage = new LocalStorage();
+            SimpleIoc.Default.Register<IStorage>(() => offlineStorage);
 
-            SimpleIoc.Default.Register<IAuthorizationService>(() => authorizationService, true);
+            var authorizationService = new AuthorizationService(offlineStorage);
+            SimpleIoc.Default.Register<IAuthorizationService>(() => authorizationService);
+            var profileService = new ProfileService(offlineStorage);
+            SimpleIoc.Default.Register<IProfileService>(() => profileService);
 
             SimpleIoc.Default.Register<LoginViewModel>(() => new LoginViewModel(authorizationService));
-            SimpleIoc.Default.Register<MainViewModel>(() => new MainViewModel(authorizationService));
+            SimpleIoc.Default.Register<MainViewModel>(() => new MainViewModel(authorizationService, profileService));
 
             SimpleIoc.Default.Register<LogOutCommand>(() => new LogOutCommand(authorizationService));
         }

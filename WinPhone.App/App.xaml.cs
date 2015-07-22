@@ -23,6 +23,10 @@ namespace WinPhone.App
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microsoft.Practices.ServiceLocation;
+
+    using WinPhone.App.Common.Commands;
+    using WinPhone.App.Interfaces;
     using WinPhone.App.Services;
     using WinPhone.App.Views;
 
@@ -101,7 +105,7 @@ namespace WinPhone.App
                 var isLoggedIn = false;
                 try
                 {
-                    isLoggedIn = Task.Run(() => (new AuthorizationService()).LogInAsync()).Result;
+                    isLoggedIn = Task.Run(() => ServiceLocator.Current.GetInstance<IAuthorizationService>().LogInAsync()).Result;
                 }
                 catch (Exception ex)
                 {
