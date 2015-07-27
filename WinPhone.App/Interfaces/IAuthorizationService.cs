@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-
+﻿
 namespace WinPhone.App.Interfaces
 {
+    using System.Threading.Tasks;
+
     using WinPhone.App.Models;
 
     internal interface IAuthorizationService

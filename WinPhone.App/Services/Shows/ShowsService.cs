@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace WinPhone.App.Services.Shows
 {
-    public class ShowsService
+    using WinPhone.App.Common.Offline;
+    using WinPhone.App.Interfaces;
+    using WinPhone.Interfaces.Models.Shows;
+    using WinPhone.MyShows.Models.Shows;
+
+    internal class ShowsService : IShowsService
     {
         private MyShows.Services.ShowsService apiService;
 
-        protected MyShows.Services.ShowsService ApiService
+        private MyShows.Services.ShowsService ApiService
         {
             get
             {
@@ -18,10 +23,19 @@ namespace WinPhone.App.Services.Shows
             }
         }
 
-        //public async Task<Profile> GetProfileAsync(string login)
-        //{
+        public async Task<List<ShowRatingInfo>> GetTopShowsAsync()
+        {
+            return await this.ApiService.GetTopShowsAsync();
+        }
 
-        //}
+        public Task<ShowInfo> GetShowWithEpisodesAsync(long id)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<List<ShowInfo>> FindShowsAsync(string search)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

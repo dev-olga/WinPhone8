@@ -3,10 +3,13 @@
 namespace WinPhone.MyShows.Models.Shows
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Newtonsoft.Json;
 
-    public class ShowInfo : BaseShow
+    //using WinPhone.Interfaces.Models.Shows;
+
+    public class ShowInfo : BaseShow/*, IShowInfo*/
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -40,5 +43,21 @@ namespace WinPhone.MyShows.Models.Shows
 
         [JsonProperty("episodes")]
         public Dictionary<long, Episode> Episodes { get; set; }
+
+        //public List<IEpisode> Episodes
+        //{
+        //    get
+        //    {
+        //        return this.episodes.Values.Cast<IEpisode>().ToList();
+        //    }
+        //    set
+        //    {
+        //        this.episodes = value.ToDictionary(k => k.Id, v => (Episode)v);
+        //    }
+        //}
+
+        //[JsonProperty("episodes")]
+        //private Dictionary<long, Episode> episodes { get; set; }
+
     }
 }

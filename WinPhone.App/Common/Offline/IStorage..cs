@@ -10,6 +10,6 @@ namespace WinPhone.App.Common.Offline
 
     public interface IStorage
     {
-        StorageFolder GetStorage();
+        Task<StorageFolder> GetStorageFolderAsync();
     }
 }

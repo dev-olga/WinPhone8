@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WinPhone.App.ViewModels
 {
-    public interface ILoadDataAsync
+    public interface IData
     {
         Task LoadData();
+
+        Task SaveData();
     }
 }

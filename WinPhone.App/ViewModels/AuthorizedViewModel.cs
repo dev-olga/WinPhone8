@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinPhone.App.ViewModels
 {
+    using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
 
     internal class AuthorizedViewModel : NotificationViewModel

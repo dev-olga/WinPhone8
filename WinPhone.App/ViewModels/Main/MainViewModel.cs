@@ -2,16 +2,17 @@
 
 namespace WinPhone.App.ViewModels.Main
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
-    using WinPhone.App.Services.Profile;
     using WinPhone.MyShows.Models.Profile;
     using WinPhone.MyShows.Models.Shows;
 
-    internal class MainViewModel : AuthorizedViewModel, ILoadDataAsync
+    internal class MainViewModel : AuthorizedViewModel, IData
     {
         private ObservableCollection<UserShow> myShows;
 
@@ -19,28 +20,66 @@ namespace WinPhone.App.ViewModels.Main
 
         private Profile profile;
 
-        private readonly IProfileService profileService;
+        private readonly IApiProvider apiProvider;
 
-        protected IProfileService ProfileService
+        private enum OfflineDataKeys
+        {
+            Profile,
+            MyShows,
+            Suggestions
+        }
+
+        protected IApiProvider ApiProvider
         {
             get
             {
-                return this.profileService;
+                return this.apiProvider;
             }
         }
 
-        public MainViewModel(IAuthorizationService authorizationService, IProfileService profileService)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainViewModel"/> class.
+        /// </summary>
+        /// <param name="authorizationService">
+        /// The authorization service.
+        /// </param>
+        public MainViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
             : base(authorizationService)
         {
-            this.profileService = profileService;
+            this.apiProvider = apiProvider;
         }
 
         public async Task LoadData()
         {
-            var shows = InternetHelper.IsNetworkAvailable() 
-                ? await this.ProfileService.GetUserShowsAsync(this.AuthorizationService.User.AuthorizationToken)
-                : await this.ProfileService.GetUserShowsOfflineAsync();
-            this.MyShows = new ObservableCollection<UserShow>(shows);
+            List<UserShow> myShowsData;
+            Profile profileData;
+            List<ShowRatingInfo> suggestionsData;
+            if (InternetHelper.IsNetworkAvailable())
+            {
+                myShowsData = await this.ApiProvider.ProfileService.GetUserShowsAsync(this.AuthorizationService.User.AuthorizationToken);
+                profileData = await this.ApiProvider.ProfileService.GetProfileAsync(this.AuthorizationService.User.UserName);
+                suggestionsData = await this.ApiProvider.ShowsService.GetTopShowsAsync();
+                suggestionsData = suggestionsData.OrderBy(s => s.Place).Take(8).ToList();
+            }
+            else
+            {
+                var mananger = OfflineProvider.GetOfflineManager();
+                myShowsData = await mananger.GetAsync<List<UserShow>>(OfflineDataKeys.MyShows);
+                profileData = await mananger.GetAsync<Profile>(OfflineDataKeys.Profile);
+                suggestionsData = await mananger.GetAsync<List<ShowRatingInfo>>(OfflineDataKeys.Suggestions);
+            }
+
+            this.MyShows = new ObservableCollection<UserShow>(myShowsData);
+            this.Profile = profileData;
+            this.Suggestions = new ObservableCollection<ShowRatingInfo>(suggestionsData);
+        }
+
+        public async Task SaveData()
+        {
+            var mananger = OfflineProvider.GetOfflineManager();
+            await mananger.SaveAsync(OfflineDataKeys.MyShows, this.MyShows.ToList());
+            await mananger.SaveAsync(OfflineDataKeys.Profile, this.Profile);
+            await mananger.SaveAsync(OfflineDataKeys.Suggestions, this.Suggestions.ToList());
         }
 
         public ObservableCollection<UserShow> MyShows

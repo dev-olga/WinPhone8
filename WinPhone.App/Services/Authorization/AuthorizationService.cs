@@ -2,24 +2,20 @@
 
 namespace WinPhone.App.Services
 {
-    using System;
-
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models;
     using WinPhone.App.Services.Authorization;
     using WinPhone.MyShows.Models.Authorization;
 
-    public class AuthorizationService : IAuthorizationService
+    internal class AuthorizationService : IAuthorizationService
     {
         /// <summary>
         /// The credentials storage.
         /// </summary>
         private CredentialsStorage credentialsStorage;
 
-        private MyShows.Services.AuthorizationService apiService;
-
-        private readonly OfflineManager offlineManager;
+        private readonly IApiProvider apiProvider;
 
         /// <summary>
         /// The user.
@@ -64,32 +60,24 @@ namespace WinPhone.App.Services
             }
         }
 
-        private MyShows.Services.AuthorizationService ApiService
+        private IApiProvider ApiProvider
         {
             get
             {
-                return this.apiService ?? (this.apiService = new MyShows.Services.AuthorizationService());
+                return this.apiProvider;
             }
         }
 
-        private OfflineManager OfflineManager
+        public AuthorizationService(IApiProvider apiProvider)
         {
-            get
-            {
-                return this.offlineManager;
-            }
-        }
-
-        public AuthorizationService(IStorage offlineStorage)
-        {
-            this.offlineManager = new OfflineManager(offlineStorage);
+            this.apiProvider = apiProvider;
         }
 
         public async Task<bool> LogInAsync(Credentials credentials, bool remember = false)
         {
             User = null;
 
-            var resp = await this.ApiService.AuthorizeAsync(
+            var resp = await this.ApiProvider.AuthorizationService.AuthorizeAsync(
                         credentials.Login,
                         credentials.Password);
 
@@ -125,7 +113,7 @@ namespace WinPhone.App.Services
         {
             User = null;
             this.CredentialsStorage.Clear();
-            this.OfflineManager.Clear();
+            OfflineProvider.GetOfflineManager().Clear();
         }
     }
 }

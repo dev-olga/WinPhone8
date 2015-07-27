@@ -29,14 +29,10 @@ namespace WinPhone.App.Common.Offline
         public async Task<T> GetAsync<T>(Enum key)
         {
             var serializer = new DataContractSerializer(typeof(T));
+            var storageFolder = await this.Storage.GetStorageFolderAsync();
             using (var stream =
-                    await this.Storage.GetStorage().OpenStreamForReadAsync(this.GetKeyName(key)))
+                    await storageFolder.OpenStreamForReadAsync(this.GetKeyName(key)))
             {
-                //using (var reader = new StreamReader(stream))
-                //{
-                //    var content = await reader.ReadToEndAsync();
-                    
-                //}
                 return (T)serializer.ReadObject(stream);
             }
         }
@@ -44,25 +40,25 @@ namespace WinPhone.App.Common.Offline
         public async Task SaveAsync<T>(Enum key, T value)
         {
             var serializer = new DataContractSerializer(typeof(T));
+            var storageFolder = await this.Storage.GetStorageFolderAsync();
             using (
                 var stream =
-                    await
-                    this.Storage.GetStorage()
-                        .OpenStreamForWriteAsync(this.GetKeyName(key), CreationCollisionOption.ReplaceExisting))
+                    await storageFolder.OpenStreamForWriteAsync(this.GetKeyName(key), CreationCollisionOption.ReplaceExisting))
             {
                 serializer.WriteObject(stream, value);
             }
         }
 
-        public void Clear()
+        public async void Clear()
         {
-            
+            var storageFolder = await this.Storage.GetStorageFolderAsync();
+            await storageFolder.DeleteAsync();
         }
 
 
         private string GetKeyName(Enum key)
         {
-            return String.Format("{0}.{1}", key.GetType().FullName, key);
+            return string.Format("{0}.{1}", key.GetType().FullName, key);
         }
     }
 }

@@ -8,7 +8,9 @@ namespace WinPhone.MyShows.Models.Shows
 {
     using Newtonsoft.Json;
 
-    public class Episode
+    //using WinPhone.Interfaces.Models.Shows;
+
+    public class Episode /*: IEpisode*/
     {
         [JsonProperty("id")]
         public long Id { get; set; }

@@ -7,10 +7,16 @@ namespace WinPhone.App.Interfaces
 
     internal interface IProfileService
     {
-        Task<List<UserShow>> GetUserShowsAsync(string token);
+        Task<List<UserShow>> GetShowsAsync(string token);
 
-        Task<List<UserShow>> GetUserShowsOfflineAsync();
+        //Task<List<UserShow>> GetShowsOfflineAsync();
 
-        Task SaveUserShowsOfflineAsync(List<UserShow> shows);
+        //Task SaveUserShowsOfflineAsync(List<UserShow> shows);
+
+        Task<Profile> GetProfileAsync(string login);
+
+        //Task<Profile> GetProfileOfflineAsync();
+
+        //Task SaveUserProfileOfflineAsync(Profile profile);
     }
 }

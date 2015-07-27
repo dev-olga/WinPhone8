@@ -1,6 +1,6 @@
-﻿namespace WinPhone.MyShows.Models.Profile
+﻿namespace WinPhone.Interfaces.Models.Profile
 {
-    public class Profile
+    public interface IProfile
     {
         string Login { get; set; }
 
@@ -8,6 +8,6 @@
 
         string Gender { get; set; }
 
-        Statistic Statistic { get; set; }
+        IStatistic Statistic { get; set; }
     }
 }
