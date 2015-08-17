@@ -85,6 +85,8 @@
     <Compile Include="Models\Profile\Statistic.cs" />
     <Compile Include="Models\Shows\BaseShow.cs" />
     <Compile Include="Models\Shows\Episode.cs" />
+    <Compile Include="Models\Shows\ProfileResponseCode.cs" />
+    <Compile Include="Models\Shows\ProfileResponse.cs" />
     <Compile Include="Models\Shows\ShowInfo.cs" />
     <Compile Include="Models\Shows\ShowRatingInfo.cs" />
     <Compile Include="Models\Profile\UserShow.cs" />

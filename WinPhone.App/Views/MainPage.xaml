@@ -9,12 +9,34 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=main:MainViewModel, IsDesignTimeCreatable=True}"
-   DataContext="{Binding Main, Source={StaticResource Locator}}">
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
+    xmlns:converters="using:WinPhone.App.Common.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+    
+    <Page.Resources>
+        <converters:CommandGroupToVisibilityConverter x:Key="CommandGroupToVisibilityConverter"/>
+        <main:StaticCommandGroups x:Key="StaticCommandGroups"/>
+    </Page.Resources>
+    <Pivot x:Name="Pivot">
+        <interactivity:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="SelectionChanged">
+                <core:InvokeCommandAction Command="{Binding SelectCommandGroupCommand}" CommandParameter="{Binding ElementName=Pivot, Path=SelectedItem}" />
+            </core:EventTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
 
-    <Pivot >
-        <PivotItem Header="My Shows">
+        <PivotItem Header="My Shows" x:Name="{Binding MyShows, Source={StaticResource StaticCommandGroups}, Converter={StaticResource ToStringConveter}}">
             <StackPanel>
-                <ListView DataContext="{Binding MyShows}"></ListView>
+                <ListView ItemsSource="{Binding MyShows.Shows}" SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
+                          Extensions:ListBoxExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}"
+                                               TextTrimming="WordEllipsis" TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </PivotItem>
         <PivotItem Header="Suggections">
@@ -24,15 +46,44 @@
         </PivotItem>
         <PivotItem Header="My Profile">
             <StackPanel>
-                <TextBlock Text="page3"></TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100">                            
+                        </ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding Profile.AvatarUrl}" Grid.Column="0"></Image>
+                    <TextBlock Margin="10" Style="{ThemeResource SubheaderTextBlockStyle}" 
+                               Text="{Binding Profile.Login}" Grid.Column="1"
+                               TextWrapping="Wrap"></TextBlock>
+                </Grid>
+                <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}">Statistic</TextBlock>
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}">Watched Episodes</TextBlock>
+                <TextBlock Text="{Binding Profile.Statistic.WatchedEpisodes}" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}">Watched Hours</TextBlock>
+                <TextBlock Text="{Binding Profile.Statistic.WatchedHours}" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}">Watched Days</TextBlock>
+                <TextBlock Text="{Binding Profile.Statistic.WatchedDays}" Style="{ThemeResource BaseTextBlockStyle}"></TextBlock>
             </StackPanel>
+           
         </PivotItem>
     </Pivot>
    
     <Page.BottomAppBar>
         <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
+                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}"/>
+                <AppBarButton Command="{Binding MyShows.DeleteShowsCommand}" Icon="Delete" Label="delete" 
+                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}"/>
+                <AppBarButton Command="{Binding AddShowCommand}" Icon="Add" Label="add new" 
+                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}" />
+            </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Logoff" Command="{Binding LogOutCommand, Source={StaticResource Locator}}"/>
+                <AppBarButton Label="logoff" Command="{Binding LogOutCommand, Source={StaticResource Locator}}"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
         

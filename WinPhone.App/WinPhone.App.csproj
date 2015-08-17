@@ -91,7 +91,10 @@
     </Compile>
     <Compile Include="Common\Commands\LogOutCommand.cs" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\Converters\CommandGroupToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Common\Converters\BooleanToListViewSelectionModeConverter.cs" />
+    <Compile Include="Common\Converters\ToStringConveter.cs" />
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
@@ -103,10 +106,17 @@
     <Compile Include="Interfaces\IApiProvider.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
     <Compile Include="Common\Offline\LocalStorage.cs" />
+    <Compile Include="ViewModels\Main\MyShowsViewModel.cs" />
     <Compile Include="Services\ApiProvider.cs" />
     <Compile Include="ViewModels\AuthorizedViewModel.cs" />
     <Compile Include="ViewModels\IData.cs" />
+    <Compile Include="ViewModels\Main\CommandGroups.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\Main\MainViewModel.cs" />
+    <Compile Include="ViewModels\Main\StaticCommandGroups.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -169,8 +179,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="WinRTXamlToolkit">
+      <HintPath>..\packages\WinRTXamlToolkit.WindowsPhone.1.8.1.0\lib\wpa\WinRTXamlToolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

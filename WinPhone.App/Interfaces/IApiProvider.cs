@@ -14,6 +14,6 @@ namespace WinPhone.App.Interfaces
 
         ShowsService ShowsService { get; }
 
-        WinPhone.MyShows.Services.AuthorizationService AuthorizationService { get; }
+        AuthorizationService AuthorizationService { get; }
     }
 }

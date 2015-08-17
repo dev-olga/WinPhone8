@@ -4,12 +4,8 @@ using System.Threading.Tasks;
 
 namespace WinPhone.MyShows.Services
 {
-    using System;
     using System.Net;
 
-    using Newtonsoft.Json.Converters;
-
-    //using WinPhone.Interfaces.Models.Shows;
     using WinPhone.MyShows.Models.Shows;
 
     public class ShowsService : BaseService
@@ -22,7 +18,7 @@ namespace WinPhone.MyShows.Services
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var result = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ShowRatingInfo>>(json);
-                    return result.Cast<ShowRatingInfo>().ToList();
+                    return result.ToList();
                 }
 
                 return null;

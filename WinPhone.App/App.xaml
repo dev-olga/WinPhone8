@@ -11,5 +11,7 @@
         <viewModels:ViewModelLocator x:Key="Locator"/>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>
+        <converters:ToStringConveter x:Key="ToStringConveter"/>
     </Application.Resources>
 </Application>

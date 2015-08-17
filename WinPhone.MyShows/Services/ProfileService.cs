@@ -32,6 +32,19 @@ namespace WinPhone.MyShows.Services
             return null;
         }
 
+        public async Task<Profile> GetUserProfileAsync(string token)
+        {
+            var response = await this.GetAsync(string.Format("/profile/"), token);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Profile>(json);
+                return result;
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Gets user's shows async.
         /// </summary>

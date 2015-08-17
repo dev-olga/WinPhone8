@@ -1,13 +1,19 @@
 ﻿namespace WinPhone.MyShows.Models.Profile
 {
+    using Newtonsoft.Json;
+
     public class Profile
     {
-        string Login { get; set; }
+        [JsonProperty("login")]
+        public string Login { get; set; }
 
-        string AvatarUrl { get; set; }
+        [JsonProperty("avatar")]
+        public string AvatarUrl { get; set; }
 
-        string Gender { get; set; }
+        [JsonProperty("gender")]
+        public string Gender { get; set; }
 
-        Statistic Statistic { get; set; }
+        [JsonProperty("stats")]
+        public Statistic Statistic { get; set; }
     }
 }

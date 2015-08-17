@@ -113,5 +113,6 @@ namespace WinPhone.App.Views
         }
 
         #endregion
+
     }
 }

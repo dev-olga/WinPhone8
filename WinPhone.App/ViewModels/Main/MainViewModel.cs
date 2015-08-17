@@ -9,25 +9,32 @@ namespace WinPhone.App.ViewModels.Main
     using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
+    using WinPhone.App.Models.Main;
     using WinPhone.MyShows.Models.Profile;
     using WinPhone.MyShows.Models.Shows;
 
     internal class MainViewModel : AuthorizedViewModel, IData
     {
-        private ObservableCollection<UserShow> myShows;
+        private readonly IApiProvider apiProvider;
+
+        private readonly RelayCommand addShowCommand;
+
+        private readonly RelayCommand<CommandGroups> selectCommandGroupCommand;
 
         private ObservableCollection<ShowRatingInfo> suggestions;
 
         private Profile profile;
 
-        private readonly IApiProvider apiProvider;
+        private readonly MyShowsViewModel myShows;
+             
+        private CommandGroups commandGroup;
 
         private enum OfflineDataKeys
         {
             Profile,
             MyShows,
             Suggestions
-        }
+        }       
 
         protected IApiProvider ApiProvider
         {
@@ -47,54 +54,51 @@ namespace WinPhone.App.ViewModels.Main
             : base(authorizationService)
         {
             this.apiProvider = apiProvider;
+            this.myShows = new MyShowsViewModel();
+            
+            //this.addShowCommand = new RelayCommand(null);
+            this.selectCommandGroupCommand = new RelayCommand<CommandGroups>(commandGroup => this.CommandGroup = commandGroup);
+           
         }
 
-        public async Task LoadData()
+        public RelayCommand AddShowCommand
         {
-            List<UserShow> myShowsData;
-            Profile profileData;
-            List<ShowRatingInfo> suggestionsData;
-            if (InternetHelper.IsNetworkAvailable())
+            get
             {
-                myShowsData = await this.ApiProvider.ProfileService.GetUserShowsAsync(this.AuthorizationService.User.AuthorizationToken);
-                profileData = await this.ApiProvider.ProfileService.GetProfileAsync(this.AuthorizationService.User.UserName);
-                suggestionsData = await this.ApiProvider.ShowsService.GetTopShowsAsync();
-                suggestionsData = suggestionsData.OrderBy(s => s.Place).Take(8).ToList();
+                return this.addShowCommand;
             }
-            else
-            {
-                var mananger = OfflineProvider.GetOfflineManager();
-                myShowsData = await mananger.GetAsync<List<UserShow>>(OfflineDataKeys.MyShows);
-                profileData = await mananger.GetAsync<Profile>(OfflineDataKeys.Profile);
-                suggestionsData = await mananger.GetAsync<List<ShowRatingInfo>>(OfflineDataKeys.Suggestions);
-            }
-
-            this.MyShows = new ObservableCollection<UserShow>(myShowsData);
-            this.Profile = profileData;
-            this.Suggestions = new ObservableCollection<ShowRatingInfo>(suggestionsData);
         }
 
-        public async Task SaveData()
+        public RelayCommand<CommandGroups> SelectCommandGroupCommand
         {
-            var mananger = OfflineProvider.GetOfflineManager();
-            await mananger.SaveAsync(OfflineDataKeys.MyShows, this.MyShows.ToList());
-            await mananger.SaveAsync(OfflineDataKeys.Profile, this.Profile);
-            await mananger.SaveAsync(OfflineDataKeys.Suggestions, this.Suggestions.ToList());
+            get
+            {
+                return this.selectCommandGroupCommand;
+            }
         }
 
-        public ObservableCollection<UserShow> MyShows
+        public CommandGroups CommandGroup
+        {
+            get
+            {
+                return this.commandGroup;
+            }
+
+            set
+            {
+                if (this.commandGroup != value)
+                {
+                    this.commandGroup = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public MyShowsViewModel MyShows
         {
             get
             {
                 return this.myShows;
-            }
-            set
-            {
-                if (this.myShows != value)
-                {
-                    this.myShows = value;
-                    this.NotifyPropertyChanged();
-                }
             }
         }
 
@@ -128,6 +132,51 @@ namespace WinPhone.App.ViewModels.Main
                     this.NotifyPropertyChanged();
                 }
             }
+        }
+
+        /// <summary>
+        /// Loads view model data async.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public async Task LoadData()
+        {
+            List<UserShow> myShowsData;
+            Profile profileData;
+            List<ShowRatingInfo> suggestionsData;
+            if (InternetHelper.IsNetworkAvailable())
+            {
+                myShowsData = await this.ApiProvider.ProfileService.GetUserShowsAsync(this.AuthorizationService.User.AuthorizationToken);
+                profileData = await this.ApiProvider.ProfileService.GetProfileAsync(this.AuthorizationService.User.UserName);
+                suggestionsData = await this.ApiProvider.ShowsService.GetTopShowsAsync();
+                suggestionsData = suggestionsData.OrderBy(s => s.Place).Take(8).ToList();
+            }
+            else
+            {
+                var mananger = OfflineProvider.GetOfflineManager();
+                myShowsData = await mananger.GetAsync<List<UserShow>>(OfflineDataKeys.MyShows);
+                profileData = await mananger.GetAsync<Profile>(OfflineDataKeys.Profile);
+                suggestionsData = await mananger.GetAsync<List<ShowRatingInfo>>(OfflineDataKeys.Suggestions);
+            }
+
+            this.MyShows.Shows = new ObservableCollection<UserShow>(myShowsData);
+            this.Profile = profileData;
+            this.Suggestions = new ObservableCollection<ShowRatingInfo>(suggestionsData);
+        }
+
+        /// <summary>
+        /// Saves view model data async.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public async Task SaveData()
+        {
+            var mananger = OfflineProvider.GetOfflineManager();
+            await mananger.SaveAsync(OfflineDataKeys.MyShows, this.MyShows.Shows.ToList());
+            await mananger.SaveAsync(OfflineDataKeys.Profile, this.Profile);
+            await mananger.SaveAsync(OfflineDataKeys.Suggestions, this.Suggestions.ToList());
         }
     }
 }
