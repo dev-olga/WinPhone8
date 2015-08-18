@@ -15,15 +15,14 @@ namespace WinPhone.App.ViewModels.Main
 
     internal class MainViewModel : AuthorizedViewModel, IData
     {
+
         private readonly IApiProvider apiProvider;
 
         private readonly RelayCommand addShowCommand;
 
-        private readonly RelayCommand deleteShowsCommand;
+        //private readonly RelayCommand deleteShowsCommand;
 
         private readonly RelayCommand<PivotItems> selectPivotItemCommand;
-
-        //private readonly RelayCommand<string> selectPivotItemCommand;
 
         private ObservableCollection<ShowRatingInfo> suggestions;
 
@@ -60,6 +59,7 @@ namespace WinPhone.App.ViewModels.Main
             : base(authorizationService)
         {
             this.apiProvider = apiProvider;
+            this.myShows = new MyShowsViewModel();
 
             this.addShowCommand = new RelayCommand(() => this.AddShow());
             this.selectPivotItemCommand = new RelayCommand<PivotItems>(
@@ -68,7 +68,7 @@ namespace WinPhone.App.ViewModels.Main
                     this.CurrentPivotItem = item;
                 });
 
-            this.deleteShowsCommand = new RelayCommand(() => this.DeleteShows(), () => this.MyShows.IsShowSelectionEnabled && this.MyShows.SelectedShows.Any());
+            //this.deleteShowsCommand = new RelayCommand(() => this.DeleteShows(), () => this.MyShows.IsShowSelectionEnabled && this.MyShows.SelectedShows.Any());
         }
 
         public string CurrentPivotItemName
@@ -104,13 +104,13 @@ namespace WinPhone.App.ViewModels.Main
             }
         }
 
-        public RelayCommand DeleteShowsCommand
-        {
-            get
-            {
-                return this.deleteShowsCommand;
-            }
-        }
+        //public RelayCommand DeleteShowsCommand
+        //{
+        //    get
+        //    {
+        //        return this.deleteShowsCommand;
+        //    }
+        //}
 
         public PivotItems CurrentPivotItem
         {
@@ -133,7 +133,7 @@ namespace WinPhone.App.ViewModels.Main
         {
             get
             {
-                return this.myShows ?? (this.myShows = new MyShowsViewModel());
+                return this.myShows;
             }
         }
 

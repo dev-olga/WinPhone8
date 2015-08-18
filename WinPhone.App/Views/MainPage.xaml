@@ -11,12 +11,9 @@
     d:DataContext="{d:DesignInstance Type=main:MainViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     xmlns:extensions="using:WinRTXamlToolkit.Controls.Extensions"
-    xmlns:converters="using:WinPhone.App.Common.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:system="using:System"
     xmlns:convertersMain="using:WinPhone.App.Common.Converters.Main">
-    
     <Page.Resources>
         <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
         <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
@@ -33,11 +30,12 @@
 
         <PivotItem Header="My Shows">
             <StackPanel>
-                <ListView ItemsSource="{Binding MyShows.Shows}" SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
-                          extensions:ListBoxExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
+                <ListView ItemsSource="{Binding MyShows.Shows}" 
+                SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
+                          extensions:ListViewExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel VerticalAlignment="Center">
+                            <StackPanel VerticalAlignment="Center" Margin="10,10,10,10">
                             <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}"
                                                TextTrimming="WordEllipsis" TextWrapping="Wrap"/>
                             </StackPanel>
@@ -85,7 +83,7 @@
                 <AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
                               Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
                     ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}"/>
-                <AppBarButton Command="{Binding DeleteShowsCommand}" Icon="Delete" Label="delete" 
+                <AppBarButton Command="{Binding MyShows.DeleteShowsCommand}" Icon="Delete" Label="delete" 
                               Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
                     ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}">
                     <!--Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=Self}}"-->

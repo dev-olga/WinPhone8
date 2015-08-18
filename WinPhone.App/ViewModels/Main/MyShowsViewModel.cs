@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace WinPhone.App.Models.Main
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
     using GalaSoft.MvvmLight.Command;
 
-    using WinPhone.App.Interfaces;
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Profile;
 
@@ -18,21 +14,28 @@ namespace WinPhone.App.Models.Main
     {
         #region Fields
 
-        private readonly RelayCommand showsSelectionCommand;        
+        private readonly RelayCommand showsSelectionCommand;
 
-        private ObservableCollection<UserShow> selectedShows;
+        private RelayCommand<IList<UserShow>> selectionChangedCommand;
+
+        private ObservableCollection<UserShow> selectedShows = new ObservableCollection<UserShow>();
 
         private bool isShowSelectionEnabled;
 
-        private ObservableCollection<UserShow> shows;
+        private ObservableCollection<UserShow> shows = new ObservableCollection<UserShow>();
 
-
+        private readonly RelayCommand deleteShowsCommand;
         #endregion
 
         public MyShowsViewModel()
         {
             this.showsSelectionCommand =
-               new RelayCommand(() => this.IsShowSelectionEnabled = !this.IsShowSelectionEnabled);           
+                new RelayCommand(() => this.IsShowSelectionEnabled = !this.IsShowSelectionEnabled);
+
+            this.deleteShowsCommand = new RelayCommand(
+                () => { var tmp = this.SelectedShows; },
+                () => this.IsShowSelectionEnabled && this.SelectedShows.Any());
+            this.SelectedShows.CollectionChanged += delegate { this.DeleteShowsCommand.RaiseCanExecuteChanged(); };
         }
 
         public RelayCommand ShowsSelectionCommand
@@ -43,11 +46,19 @@ namespace WinPhone.App.Models.Main
             }
         }
 
+        public RelayCommand DeleteShowsCommand
+        {
+            get
+            {
+                return this.deleteShowsCommand;
+            }
+        }
+
         public ObservableCollection<UserShow> Shows
         {
             get
             {
-                return this.shows ?? (this.shows = new ObservableCollection<UserShow>());
+                return this.shows;
             }
             set
             {
@@ -71,6 +82,7 @@ namespace WinPhone.App.Models.Main
                 {
                     this.isShowSelectionEnabled = value;
                     this.NotifyPropertyChanged();
+                    this.DeleteShowsCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -79,7 +91,7 @@ namespace WinPhone.App.Models.Main
         {
             get
             {
-                return this.selectedShows ?? (this.selectedShows = new ObservableCollection<UserShow>());
+                return this.selectedShows;
             }
             set
             {
