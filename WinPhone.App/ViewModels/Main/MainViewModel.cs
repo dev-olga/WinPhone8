@@ -2,13 +2,9 @@
 
 namespace WinPhone.App.ViewModels.Main
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Runtime.InteropServices.WindowsRuntime;
-
-    using Windows.UI.Xaml.Controls;
 
     using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
@@ -23,15 +19,21 @@ namespace WinPhone.App.ViewModels.Main
 
         private readonly RelayCommand addShowCommand;
 
-        private readonly RelayCommand<CommandGroups> selectCommandGroupCommand;
+        private readonly RelayCommand deleteShowsCommand;
+
+        private readonly RelayCommand<PivotItems> selectPivotItemCommand;
+
+        //private readonly RelayCommand<string> selectPivotItemCommand;
 
         private ObservableCollection<ShowRatingInfo> suggestions;
 
+        private string currentPivotItemName;
+
         private Profile profile;
 
-        private readonly MyShowsViewModel myShows;
+        private MyShowsViewModel myShows;
              
-        private CommandGroups commandGroup;
+        private PivotItems currentPivotItem;
 
         private enum OfflineDataKeys
         {
@@ -47,7 +49,7 @@ namespace WinPhone.App.ViewModels.Main
                 return this.apiProvider;
             }
         }
-
+ 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
@@ -58,14 +60,32 @@ namespace WinPhone.App.ViewModels.Main
             : base(authorizationService)
         {
             this.apiProvider = apiProvider;
-            this.myShows = new MyShowsViewModel();
 
-            //this.addShowCommand = new RelayCommand(null);
-            this.selectCommandGroupCommand = new RelayCommand<CommandGroups>(
+            this.addShowCommand = new RelayCommand(() => this.AddShow());
+            this.selectPivotItemCommand = new RelayCommand<PivotItems>(
                 item =>
-                    {
-                        this.CommandGroup = item;
-                    });
+                {
+                    this.CurrentPivotItem = item;
+                });
+
+            this.deleteShowsCommand = new RelayCommand(() => this.DeleteShows(), () => this.MyShows.IsShowSelectionEnabled && this.MyShows.SelectedShows.Any());
+        }
+
+        public string CurrentPivotItemName
+        {
+            get
+            {
+                return this.currentPivotItemName;
+            }
+
+            private set
+            {
+                if (this.currentPivotItemName != value.ToLower())
+                {
+                    this.currentPivotItemName = value.ToLower();
+                    this.NotifyPropertyChanged();
+                }
+            }
         }
 
         public RelayCommand AddShowCommand
@@ -76,26 +96,34 @@ namespace WinPhone.App.ViewModels.Main
             }
         }
 
-        public RelayCommand<CommandGroups> SelectCommandGroupCommand
+        public RelayCommand<PivotItems> SelectPivotItemCommand
         {
             get
             {
-                return this.selectCommandGroupCommand;
+                return this.selectPivotItemCommand;
             }
         }
 
-        public CommandGroups CommandGroup
+        public RelayCommand DeleteShowsCommand
         {
             get
             {
-                return this.commandGroup;
+                return this.deleteShowsCommand;
+            }
+        }
+
+        public PivotItems CurrentPivotItem
+        {
+            get
+            {
+                return this.currentPivotItem;
             }
 
             set
             {
-                if (this.commandGroup != value)
+                if (this.currentPivotItem != value)
                 {
-                    this.commandGroup = value;
+                    this.currentPivotItem = value;
                     this.NotifyPropertyChanged();
                 }
             }
@@ -105,7 +133,7 @@ namespace WinPhone.App.ViewModels.Main
         {
             get
             {
-                return this.myShows;
+                return this.myShows ?? (this.myShows = new MyShowsViewModel());
             }
         }
 
@@ -115,7 +143,7 @@ namespace WinPhone.App.ViewModels.Main
             {
                 return this.suggestions;
             }
-            set
+            private set
             {
                 if (this.suggestions != value)
                 {
@@ -131,7 +159,7 @@ namespace WinPhone.App.ViewModels.Main
             {
                 return this.profile;
             }
-            set
+            private set
             {
                 if (this.profile != value)
                 {
@@ -139,6 +167,16 @@ namespace WinPhone.App.ViewModels.Main
                     this.NotifyPropertyChanged();
                 }
             }
+        }
+
+        private async Task DeleteShows()
+        {
+            //this.ApiProvider.ShowsService.
+        }
+
+        private async Task AddShow()
+        {
+            //this.ApiProvider.ShowsService.
         }
 
         /// <summary>
@@ -185,5 +223,6 @@ namespace WinPhone.App.ViewModels.Main
             await mananger.SaveAsync(OfflineDataKeys.Profile, this.Profile);
             await mananger.SaveAsync(OfflineDataKeys.Suggestions, this.Suggestions.ToList());
         }
+
     }
 }

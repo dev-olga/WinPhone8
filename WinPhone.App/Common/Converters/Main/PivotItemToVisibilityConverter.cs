@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace WinPhone.App.Common.Converters
+namespace WinPhone.App.Common.Converters.Main
 {
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
     using WinPhone.App.ViewModels.Main;
 
-    internal class CommandGroupToVisibilityConverter : IValueConverter
+    internal class PivotItemToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (value is CommandGroups && parameter is CommandGroups && (CommandGroups)value == (CommandGroups)parameter) 
+            return (value is PivotItems && parameter is PivotItems && (PivotItems)value == (PivotItems)parameter) 
                 ? Visibility.Visible 
                 : Visibility.Collapsed;
         }

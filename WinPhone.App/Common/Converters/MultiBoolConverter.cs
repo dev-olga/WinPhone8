@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinPhone.App.ViewModels.Main
+namespace WinPhone.App.Common.Converters
 {
-    internal enum CommandGroups
+    class MultiBoolConverter
     {
-        None,
-        MyShows
     }
 }

@@ -11,7 +11,6 @@
         <viewModels:ViewModelLocator x:Key="Locator"/>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>
-        <converters:PivotItemEventAgrsToCommandGroupConveter x:Key="PivotItemEventAgrsToCommandGroupConveter"/>
+        <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>        
     </Application.Resources>
 </Application>

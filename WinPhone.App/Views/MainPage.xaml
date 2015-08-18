@@ -13,38 +13,45 @@
     xmlns:extensions="using:WinRTXamlToolkit.Controls.Extensions"
     xmlns:converters="using:WinPhone.App.Common.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:system="using:System"
+    xmlns:convertersMain="using:WinPhone.App.Common.Converters.Main">
     
     <Page.Resources>
-        <converters:CommandGroupToVisibilityConverter x:Key="CommandGroupToVisibilityConverter"/>
-        <main:StaticCommandGroups x:Key="StaticCommandGroups"/>
+        <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
+        <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
+        <main:StaticPivotItems x:Key="StaticPivotItems"/>
     </Page.Resources>
     <Pivot x:Name="Pivot">
         <interactivity:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="PivotItemLoaded">
-                <core:InvokeCommandAction Command="{Binding SelectCommandGroupCommand}" InputConverter="{StaticResource PivotItemEventAgrsToCommandGroupConveter}" />
+            <core:EventTriggerBehavior EventName="SelectionChanged">
+                <core:InvokeCommandAction Command="{Binding SelectPivotItemCommand}" 
+                                          InputConverter="{StaticResource PivotItemEventAgrsToPivotItemConveter}"
+                                          InputConverterParameter="{Binding ElementName=Pivot, Path=SelectedIndex}"  />
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
-        <PivotItem Header="My Shows" x:Name="MyShows">
+        <PivotItem Header="My Shows">
             <StackPanel>
                 <ListView ItemsSource="{Binding MyShows.Shows}" SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
                           extensions:ListBoxExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
+                            <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}"
                                                TextTrimming="WordEllipsis" TextWrapping="Wrap"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="Suggections" x:Name="Suggections">
+        <PivotItem Header="Suggections">
             <StackPanel>
                 <TextBlock Text="page2"></TextBlock>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="My Profile" x:Name="MyProfile">
+        <PivotItem Header="My Profile">
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -72,15 +79,24 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
-                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
-                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}"/>
-                <AppBarButton Command="{Binding MyShows.DeleteShowsCommand}" Icon="Delete" Label="delete" 
-                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
-                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}"/>
                 <AppBarButton Command="{Binding AddShowCommand}" Icon="Add" Label="add new" 
-                              Visibility="{Binding CommandGroup, Converter={StaticResource CommandGroupToVisibilityConverter}, 
-                    ConverterParameter={Binding MyShows, Source={StaticResource StaticCommandGroups}}}" />
+                              Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}"/>
+                <AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
+                              Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}"/>
+                <AppBarButton Command="{Binding DeleteShowsCommand}" Icon="Delete" Label="delete" 
+                              Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
+                    ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}">
+                    <!--Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=Self}}"-->
+                    <!--<AppBarButton.Visibility>
+                        <Binding Converter="CommandGroupToVisibilityConverter">
+                            <Binding.ConverterParameter>
+                                <system:String>MyShows</system:String>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </AppBarButton.Visibility>-->
+                </AppBarButton>
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="logoff" Command="{Binding LogOutCommand, Source={StaticResource Locator}}"/>

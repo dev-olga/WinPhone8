@@ -96,7 +96,7 @@ namespace WinPhone.App.Views
         {
             if (this.DataContext is IData)
             {
-                await(this.DataContext as IData).LoadData();
+                await (this.DataContext as IData).LoadData();
             }
 
             this.navigationHelper.OnNavigatedTo(e);

@@ -91,10 +91,11 @@
     </Compile>
     <Compile Include="Common\Commands\LogOutCommand.cs" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\Converters\CommandGroupToVisibilityConverter.cs" />
+    <Compile Include="Common\Converters\Main\PivotItemToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Common\Converters\BooleanToListViewSelectionModeConverter.cs" />
-    <Compile Include="Common\Converters\PivotItemEventAgrsToCommandGroupConveter.cs" />
+    <Compile Include="Common\Converters\Main\PivotItemEventAgrsToPivotItemConveter.cs" />
+    <Compile Include="Common\Converters\MultiBoolConverter.cs" />
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
@@ -110,11 +111,11 @@
     <Compile Include="Services\ApiProvider.cs" />
     <Compile Include="ViewModels\AuthorizedViewModel.cs" />
     <Compile Include="ViewModels\IData.cs" />
-    <Compile Include="ViewModels\Main\CommandGroups.cs">
+    <Compile Include="ViewModels\Main\PivotItems.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\Main\MainViewModel.cs" />
-    <Compile Include="ViewModels\Main\StaticCommandGroups.cs">
+    <Compile Include="ViewModels\Main\StaticPivotItems.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\ViewModelLocator.cs" />

@@ -17,34 +17,23 @@ namespace WinPhone.App.Models.Main
     internal class MyShowsViewModel : NotificationViewModel
     {
         #region Fields
-        //private readonly IApiProvider apiProvider;
 
-        private readonly RelayCommand showsSelectionCommand;
-
-        //private readonly RelayCommand deleteShowsCommand;
+        private readonly RelayCommand showsSelectionCommand;        
 
         private ObservableCollection<UserShow> selectedShows;
 
         private bool isShowSelectionEnabled;
 
         private ObservableCollection<UserShow> shows;
+
+
         #endregion
 
-        public MyShowsViewModel(/*IApiProvider apiProvider*/)
+        public MyShowsViewModel()
         {
-           // this.apiProvider = apiProvider;
             this.showsSelectionCommand =
-               new RelayCommand(() => this.IsShowSelectionEnabled = !this.IsShowSelectionEnabled);
-           // this.deleteShowsCommand = new RelayCommand(() => this.DeleteShows());
+               new RelayCommand(() => this.IsShowSelectionEnabled = !this.IsShowSelectionEnabled);           
         }
-
-        //protected IApiProvider ApiProvider
-        //{
-        //    get
-        //    {
-        //        return this.apiProvider;
-        //    }
-        //}
 
         public RelayCommand ShowsSelectionCommand
         {
@@ -54,19 +43,11 @@ namespace WinPhone.App.Models.Main
             }
         }
 
-        //public RelayCommand DeleteShowsCommand
-        //{
-        //    get
-        //    {
-        //        return this.deleteShowsCommand;
-        //    }
-        //}
-
         public ObservableCollection<UserShow> Shows
         {
             get
             {
-                return this.shows;
+                return this.shows ?? (this.shows = new ObservableCollection<UserShow>());
             }
             set
             {
@@ -98,7 +79,7 @@ namespace WinPhone.App.Models.Main
         {
             get
             {
-                return this.selectedShows;
+                return this.selectedShows ?? (this.selectedShows = new ObservableCollection<UserShow>());
             }
             set
             {
@@ -108,12 +89,6 @@ namespace WinPhone.App.Models.Main
                     this.NotifyPropertyChanged();
                 }
             }
-        }
-
-
-        public async Task DeleteShows()
-        {
-            //this.ApiProvider.ShowsService.
         }
     }
 }
