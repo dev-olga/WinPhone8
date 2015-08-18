@@ -94,7 +94,7 @@
     <Compile Include="Common\Converters\CommandGroupToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Common\Converters\BooleanToListViewSelectionModeConverter.cs" />
-    <Compile Include="Common\Converters\ToStringConveter.cs" />
+    <Compile Include="Common\Converters\PivotItemEventAgrsToCommandGroupConveter.cs" />
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />

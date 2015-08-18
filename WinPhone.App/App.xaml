@@ -12,6 +12,6 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>
-        <converters:ToStringConveter x:Key="ToStringConveter"/>
+        <converters:PivotItemEventAgrsToCommandGroupConveter x:Key="PivotItemEventAgrsToCommandGroupConveter"/>
     </Application.Resources>
 </Application>

@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=main:MainViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
-    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
+    xmlns:extensions="using:WinRTXamlToolkit.Controls.Extensions"
     xmlns:converters="using:WinPhone.App.Common.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core">
@@ -21,15 +21,15 @@
     </Page.Resources>
     <Pivot x:Name="Pivot">
         <interactivity:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="SelectionChanged">
-                <core:InvokeCommandAction Command="{Binding SelectCommandGroupCommand}" CommandParameter="{Binding ElementName=Pivot, Path=SelectedItem}" />
+            <core:EventTriggerBehavior EventName="PivotItemLoaded">
+                <core:InvokeCommandAction Command="{Binding SelectCommandGroupCommand}" InputConverter="{StaticResource PivotItemEventAgrsToCommandGroupConveter}" />
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
-        <PivotItem Header="My Shows" x:Name="{Binding MyShows, Source={StaticResource StaticCommandGroups}, Converter={StaticResource ToStringConveter}}">
+        <PivotItem Header="My Shows" x:Name="MyShows">
             <StackPanel>
                 <ListView ItemsSource="{Binding MyShows.Shows}" SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
-                          Extensions:ListBoxExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
+                          extensions:ListBoxExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}"
@@ -39,12 +39,12 @@
                 </ListView>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="Suggections">
+        <PivotItem Header="Suggections" x:Name="Suggections">
             <StackPanel>
                 <TextBlock Text="page2"></TextBlock>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="My Profile">
+        <PivotItem Header="My Profile" x:Name="MyProfile">
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>

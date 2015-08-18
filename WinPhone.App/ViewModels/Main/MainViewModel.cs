@@ -2,9 +2,13 @@
 
 namespace WinPhone.App.ViewModels.Main
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Runtime.InteropServices.WindowsRuntime;
+
+    using Windows.UI.Xaml.Controls;
 
     using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
@@ -34,7 +38,7 @@ namespace WinPhone.App.ViewModels.Main
             Profile,
             MyShows,
             Suggestions
-        }       
+        }
 
         protected IApiProvider ApiProvider
         {
@@ -55,10 +59,13 @@ namespace WinPhone.App.ViewModels.Main
         {
             this.apiProvider = apiProvider;
             this.myShows = new MyShowsViewModel();
-            
+
             //this.addShowCommand = new RelayCommand(null);
-            this.selectCommandGroupCommand = new RelayCommand<CommandGroups>(commandGroup => this.CommandGroup = commandGroup);
-           
+            this.selectCommandGroupCommand = new RelayCommand<CommandGroups>(
+                item =>
+                    {
+                        this.CommandGroup = item;
+                    });
         }
 
         public RelayCommand AddShowCommand
