@@ -36,8 +36,8 @@ namespace WinPhone.MyShows.Models.Shows
         [JsonProperty("episodeNumber")]
         public int EpisodeNumber { get; set; }
 
-          [JsonProperty("productionNumber")]
-        public int? ProductionNumber { get; set; }
+        [JsonProperty("productionNumber")]
+        public string ProductionNumber { get; set; }
 
         [JsonProperty("sequenceNumber")]
         public int? SequenceNumber { get; set; }

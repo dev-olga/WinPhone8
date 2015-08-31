@@ -14,7 +14,7 @@
         public string Image { get; set; }
 
         [JsonProperty("rating")]
-        public double Rating { get; set; }
+        public float Rating { get; set; }
         
     }
 }

@@ -1,21 +1,15 @@
-﻿using System.Linq;
-
-namespace WinPhone.App.Models.Main
+﻿namespace WinPhone.App.Models.Main
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Threading.Tasks;
 
     using GalaSoft.MvvmLight.Command;
 
     using WinPhone.App.Interfaces;
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Profile;
-    using WinPhone.MyShows.Models.Shows;
-
-    using WinRTXamlToolkit.Tools;
 
     internal class MyShowsViewModel : NotificationViewModel, IDisposable
     {

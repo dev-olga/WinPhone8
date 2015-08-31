@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinPhone.App.ViewModels
+﻿namespace WinPhone.App.ViewModels
 {
-    using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
 
     internal class AuthorizedViewModel : NotificationViewModel
-    {
+    {       
         private readonly IAuthorizationService authorizationService;
 
         protected IAuthorizationService AuthorizationService

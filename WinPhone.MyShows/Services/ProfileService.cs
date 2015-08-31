@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace WinPhone.MyShows.Services
 {
+    using System;
     using System.Net;
 
     using WinPhone.MyShows.Models.Profile;
@@ -102,16 +103,61 @@ namespace WinPhone.MyShows.Services
             }
         }
 
-        public async Task<ProfileResponse> UpdateShowStatusAsync(long id, ShowStatus status)
+        public async Task<ProfileResponse> UpdateShowStatusAsync(string token, long id, ShowStatus status)
         {
             var result = new ProfileResponse();
-            using (var response = await this.GetAsync("/profile/shows/" + id + "/" + status.ToString().ToLower()))
+            using (var response = await this.GetAsync("/profile/shows/" + id + "/" + status.ToString().ToLower(), token))
             {
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.OK:
                         {
                             result.Code = ProfileResponseCode.OK;
+                            break;
+                        }
+                    case HttpStatusCode.Unauthorized:
+                        {
+                            result.Code = ProfileResponseCode.AuthorizationRequired;
+                            break;
+                        }
+                    case HttpStatusCode.NotFound:
+                        {
+                            result.Code = ProfileResponseCode.NotFound;
+                            break;
+                        }
+                    default:
+                        {
+                            result.Code = ProfileResponseCode.Unknown;
+                            break;
+                        }
+                }
+
+                return result;
+            }
+        }
+
+        public async Task<ProfileResponse<List<WatchedEpisode>>> GetWatchedEpisodesAsync(string token, long id)
+        {
+            var result = new ProfileResponse<List<WatchedEpisode>>();
+            using (var response = await this.GetAsync("/profile/shows/" + id + "/", token))
+            {
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.OK:
+                        {
+                            var json = await response.Content.ReadAsStringAsync();
+                            var data = new Dictionary<string, WatchedEpisode>();
+                            try
+                            {
+                                data =
+                                    Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, WatchedEpisode>>(
+                                        json);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            result.Code = ProfileResponseCode.OK;
+                            result.Data = data.Values.ToList();
                             break;
                         }
                     case HttpStatusCode.Unauthorized:

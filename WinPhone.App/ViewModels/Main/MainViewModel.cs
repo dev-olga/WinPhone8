@@ -8,21 +8,25 @@ namespace WinPhone.App.ViewModels.Main
     using System.Collections.Specialized;
     using System.Linq;
 
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     using WinPhone.App.Common;
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models.Main;
+    using WinPhone.App.Views;
     using WinPhone.MyShows.Models.Profile;
     using WinPhone.MyShows.Models.Shows;
 
-    internal class MainViewModel : AuthorizedViewModel, IDisposable
-    {
-
-        private readonly IApiProvider apiProvider;
+    internal class MainViewModel : BaseViewModel, IDisposable
+    {        
 
         private readonly RelayCommand addShowCommand;
 
         private readonly RelayCommand<PivotItems> selectPivotItemCommand;
+
+        private readonly RelayCommand<ShowRatingInfo> selectShowCommand;
 
         private ObservableCollection<ShowRatingInfo> suggestions;
 
@@ -40,14 +44,6 @@ namespace WinPhone.App.ViewModels.Main
             MyShows,
             Suggestions
         }
-
-        protected IApiProvider ApiProvider
-        {
-            get
-            {
-                return this.apiProvider;
-            }
-        }
  
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -59,9 +55,8 @@ namespace WinPhone.App.ViewModels.Main
         /// The api Provider.
         /// </param>
         public MainViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
-            : base(authorizationService)
+            : base(authorizationService, apiProvider)
         {
-            this.apiProvider = apiProvider;
             this.myShows = new MyShowsViewModel(apiProvider);
             this.MyShows.SelectedShows.CollectionChanged += this.ShowsCollectionChanged;
 
@@ -90,7 +85,15 @@ namespace WinPhone.App.ViewModels.Main
                             }
                     }
                     this.Processing = false;
-                });            
+                });
+            this.selectShowCommand = new RelayCommand<ShowRatingInfo>(
+                show =>
+                    {
+                        if (show != null)
+                        {
+                            (Window.Current.Content as Frame).Navigate(typeof(ShowDetailsPage), show);
+                        }
+                    });
         }
 
         public RelayCommand AddShowCommand
@@ -106,6 +109,14 @@ namespace WinPhone.App.ViewModels.Main
             get
             {
                 return this.selectPivotItemCommand;
+            }
+        }
+
+        public RelayCommand<ShowRatingInfo> SelectShowCommand
+        {
+            get
+            {
+                return this.selectShowCommand;
             }
         }
 
@@ -201,7 +212,7 @@ namespace WinPhone.App.ViewModels.Main
                 profileData = await mananger.GetAsync<Profile>(OfflineDataKeys.Profile);
             }
 
-            this.Profile = profileData;
+            this.Profile = profileData ?? new Profile();
         }
 
         private async void LoadSuggestionsAsync()
@@ -219,7 +230,7 @@ namespace WinPhone.App.ViewModels.Main
                 suggestionsData = await mananger.GetAsync<List<ShowRatingInfo>>(OfflineDataKeys.Suggestions);
             }
 
-            this.Suggestions = new ObservableCollection<ShowRatingInfo>(suggestionsData);
+            this.Suggestions = new ObservableCollection<ShowRatingInfo>(suggestionsData ?? new List<ShowRatingInfo>());
         }
 
         private async void LoadMyShowsAsync()

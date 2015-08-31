@@ -18,6 +18,7 @@ namespace WinPhone.App.ViewModels
     using WinPhone.App.Services;
     using WinPhone.App.ViewModels.Login;
     using WinPhone.App.ViewModels.Main;
+    using WinPhone.App.ViewModels.ShowDetails;
 
     internal class ViewModelLocator
     {
@@ -34,6 +35,14 @@ namespace WinPhone.App.ViewModels
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+
+        public ShowDetailsViewModel ShowDetails
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ShowDetailsViewModel>();
             }
         }
         
@@ -58,6 +67,7 @@ namespace WinPhone.App.ViewModels
 
             SimpleIoc.Default.Register<LoginViewModel>(() => new LoginViewModel(authorizationService));
             SimpleIoc.Default.Register<MainViewModel>(() => new MainViewModel(authorizationService, apiProvider));
+            SimpleIoc.Default.Register<ShowDetailsViewModel>(() => new ShowDetailsViewModel(authorizationService, apiProvider));
 
             SimpleIoc.Default.Register<LogOutCommand>(() => new LogOutCommand(authorizationService));
         }

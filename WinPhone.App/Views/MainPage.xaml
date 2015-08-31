@@ -18,6 +18,7 @@
     <views:BasePage.Resources>
         <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
         <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
+        <convertersMain:SelectionChangedEventAgrsToShowRatingInfoConveter x:Key="SelectionChangedEventAgrsToShowRatingInfoConveter"/>
         <main:StaticPivotItems x:Key="StaticPivotItems"/>
     </views:BasePage.Resources>
     <Pivot x:Name="Pivot">
@@ -40,7 +41,7 @@
                         <DataTemplate>
                             <StackPanel VerticalAlignment="Center" Margin="10,10,10,10">
                             <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}"
-                                               TextTrimming="WordEllipsis" TextWrapping="Wrap"/>
+                                               TextTrimming="WordEllipsis" TextWrapping="Wrap" />
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -51,12 +52,20 @@
             <Grid>
                 <ProgressRing Height="25" Width="25" IsActive="True" Grid.Column="0" Grid.Row="0"
                               Visibility="{Binding Path=Processing, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
-                <GridView ItemsSource="{Binding Suggestions}" 
+                <GridView ItemsSource="{Binding Suggestions}"  
+                          x:Name="Suggections"
                           Grid.Column="0" Grid.Row="0"
                           ScrollViewer.VerticalScrollMode="Auto"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
-                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                          IsItemClickEnabled="True">
+                          ScrollViewer.HorizontalScrollBarVisibility="Visible" >
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction Command="{Binding SelectShowCommand}"
+                                          InputConverter="{StaticResource SelectionChangedEventAgrsToShowRatingInfoConveter}"
+                                          InputConverterParameter="{Binding ElementName=Suggections, Path=SelectedItem}"  />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                    
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Grid Width="150" Height="150" Margin="15,15,15,15">

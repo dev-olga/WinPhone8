@@ -8,6 +8,8 @@ namespace WinPhone.MyShows.Models.Profile
 {
     using Newtonsoft.Json;
 
+    using WinPhone.MyShows.Attributes;
+    using WinPhone.MyShows.Helpers;
     using WinPhone.MyShows.Models.Shows;
 
     public class UserShow : BaseShow
@@ -17,6 +19,16 @@ namespace WinPhone.MyShows.Models.Profile
 
         [JsonProperty("watchStatus")]
         public string WatchStatus { get; set; }
+
+        public ShowStatus Status
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ShowStatus))
+                    .Cast<ShowStatus>()
+                    .FirstOrDefault(status => status.GetAttribute<DisplayAttribute>().Name == this.WatchStatus);
+            }
+        }
 
         [JsonProperty("watchedEpisodes")]
         public int WatchedEpisodes { get; set; }

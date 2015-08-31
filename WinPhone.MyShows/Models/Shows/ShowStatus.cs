@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinPhone.MyShows.Models.Shows
+﻿namespace WinPhone.MyShows.Models.Shows
 {
+    using WinPhone.MyShows.Attributes;
+
     public enum ShowStatus
     {
+        [Display("watching")]
         Watching = 1,
-        Later, 
-        Cancelled, 
+
+        [Display("later")]
+        Later,
+
+        [Display("cancelled")]
+        Cancelled,
+
+        [Display("remove")]
         Remove 
     }
 }

@@ -79,9 +79,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DisplayAttribute.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\MD5Helper.cs" />
     <Compile Include="Models\Profile\Profile.cs" />
     <Compile Include="Models\Profile\Statistic.cs" />
+    <Compile Include="Models\Profile\WatchedEpisode.cs" />
     <Compile Include="Models\Shows\BaseShow.cs" />
     <Compile Include="Models\Shows\Episode.cs" />
     <Compile Include="Models\Profile\ProfileResponseCode.cs" />

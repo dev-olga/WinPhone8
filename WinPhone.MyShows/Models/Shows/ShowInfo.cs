@@ -23,11 +23,8 @@ namespace WinPhone.MyShows.Models.Shows
         [JsonProperty("voted")]
         public long? Voted { get; set; }
 
-        [JsonProperty("rating")]
-        public double Rating { get; set; }
-
         [JsonProperty("country")]
-        public string country { get; set; }
+        public string Country { get; set; }
 
         [JsonProperty("kinopoiskId")]
         public int? KinopoiskId { get; set; }
@@ -40,6 +37,9 @@ namespace WinPhone.MyShows.Models.Shows
 
         [JsonProperty("started")]
         public DateTime Started { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         [JsonProperty("episodes")]
         public Dictionary<long, Episode> Episodes { get; set; }
