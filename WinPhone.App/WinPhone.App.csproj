@@ -90,6 +90,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Commands\LogOutCommand.cs" />
+    <Compile Include="Common\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\Main\PivotItemToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\InverseBooleanConverter.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Common\Offline\OfflineManager.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="Extentions\ListViewExtensions.cs" />
     <Compile Include="Interfaces\IApiProvider.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
     <Compile Include="Common\Offline\LocalStorage.cs" />
@@ -119,6 +119,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\BasePage.xaml.cs">
+      <DependentUpon>BasePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\BasePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

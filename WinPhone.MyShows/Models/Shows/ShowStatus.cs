@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace WinPhone.MyShows.Models.Shows
 {
-    public class ProfileResponse<T>
+    public enum ShowStatus
     {
-        public ProfileResponseCode Code {get; set; }
-        public T Data { get; set; }
-
+        Watching = 1,
+        Later, 
+        Cancelled, 
+        Remove 
     }
 }

@@ -2,15 +2,22 @@
 
 namespace WinPhone.App.Models.Main
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Threading.Tasks;
 
     using GalaSoft.MvvmLight.Command;
 
+    using WinPhone.App.Interfaces;
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Profile;
+    using WinPhone.MyShows.Models.Shows;
 
-    internal class MyShowsViewModel : NotificationViewModel
+    using WinRTXamlToolkit.Tools;
+
+    internal class MyShowsViewModel : NotificationViewModel, IDisposable
     {
         #region Fields
 
@@ -24,18 +31,36 @@ namespace WinPhone.App.Models.Main
 
         private ObservableCollection<UserShow> shows = new ObservableCollection<UserShow>();
 
-        private readonly RelayCommand deleteShowsCommand;
+        //private readonly RelayCommand deleteShowsCommand;
+
+        protected readonly IApiProvider apiProvider;
         #endregion
 
-        public MyShowsViewModel()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MyShowsViewModel"/> class.
+        /// </summary>
+        /// <param name="apiProvider">
+        /// The api provider.
+        /// </param>
+        public MyShowsViewModel(IApiProvider apiProvider)
         {
+            this.apiProvider = apiProvider;
             this.showsSelectionCommand =
                 new RelayCommand(() => this.IsShowSelectionEnabled = !this.IsShowSelectionEnabled);
 
-            this.deleteShowsCommand = new RelayCommand(
-                () => { var tmp = this.SelectedShows; },
-                () => this.IsShowSelectionEnabled && this.SelectedShows.Any());
-            this.SelectedShows.CollectionChanged += delegate { this.DeleteShowsCommand.RaiseCanExecuteChanged(); };
+            //this.deleteShowsCommand = new RelayCommand(
+            //    this.DeleteShows,
+            //    () => this.IsShowSelectionEnabled && this.SelectedShows.Any());
+
+            this.SelectedShows.CollectionChanged += this.SelectedShowsCollectionChanged;
+        }
+
+        protected IApiProvider ApiProvider
+        {
+            get
+            {
+                return this.apiProvider;
+            }
         }
 
         public RelayCommand ShowsSelectionCommand
@@ -46,13 +71,13 @@ namespace WinPhone.App.Models.Main
             }
         }
 
-        public RelayCommand DeleteShowsCommand
-        {
-            get
-            {
-                return this.deleteShowsCommand;
-            }
-        }
+        //public RelayCommand DeleteShowsCommand
+        //{
+        //    get
+        //    {
+        //        return this.deleteShowsCommand;
+        //    }
+        //}
 
         public ObservableCollection<UserShow> Shows
         {
@@ -82,7 +107,7 @@ namespace WinPhone.App.Models.Main
                 {
                     this.isShowSelectionEnabled = value;
                     this.NotifyPropertyChanged();
-                    this.DeleteShowsCommand.RaiseCanExecuteChanged();
+                    //this.DeleteShowsCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -102,5 +127,25 @@ namespace WinPhone.App.Models.Main
                 }
             }
         }
+
+        private void SelectedShowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //this.DeleteShowsCommand.RaiseCanExecuteChanged();
+        }
+
+        public void Dispose()
+        {
+            //this.SelectedShows.CollectionChanged -= SelectedShowsCollectionChanged;
+        }
+
+        //public async void DeleteShows()
+        //{
+        //    //this.SelectedShows.ForEach(selectedShow => this.Shows.Remove(selectedShow));
+        //    var newCollection = new ObservableCollection<UserShow>(this.Shows.Where(s => !this.SelectedShows.Contains(s)));
+        //    await Task.WhenAll(this.SelectedShows.Select(
+        //        selectedShow =>
+        //        this.ApiProvider.ProfileService.UpdateShowStatusAsync(selectedShow.ShowId, ShowStatus.Remove)));
+        //    this.Shows = newCollection;
+        //}
     }
 }

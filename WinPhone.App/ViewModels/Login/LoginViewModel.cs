@@ -151,9 +151,13 @@
         private async void Authorize()
         {
             this.Processing = true;
-            var res = await this.AuthorizationService.LogInAsync(this.credentials, this.Remember);
-            if (res)
+            var isLoggedIn = await this.AuthorizationService.LogInAsync(this.credentials, this.Remember);
+            if (isLoggedIn)
             {
+                this.credentials.Login = string.Empty;
+                this.Password = string.Empty;
+                this.Remember = false;
+
                 (Window.Current.Content as Frame).Navigate(typeof(MainPage));
             }
             else

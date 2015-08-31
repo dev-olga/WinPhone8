@@ -5,11 +5,21 @@
 
     using Windows.Storage;
 
+    using WinRTXamlToolkit.IO.Extensions;
+
     internal class LocalStorage : IStorage
     {
+        private static readonly string FolderName = "OfflineData";
+
         public async Task<StorageFolder> GetStorageFolderAsync()
         {
-            return await ApplicationData.Current.LocalFolder.GetFolderAsync("OfflineData");
+            var folder = ApplicationData.Current.LocalFolder;
+            if (!await folder.ContainsFolderAsync(FolderName))
+            {
+                return await ApplicationData.Current.LocalFolder.CreateFolderAsync(FolderName);
+            }
+            return await ApplicationData.Current.LocalFolder.GetFolderAsync(FolderName);
+            //return ApplicationData.Current.LocalFolder;
         }
     }
 }

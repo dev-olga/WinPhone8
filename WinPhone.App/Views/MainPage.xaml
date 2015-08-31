@@ -1,4 +1,4 @@
-﻿<Page
+﻿<views:BasePage
     x:Class="WinPhone.App.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,12 +13,13 @@
     xmlns:extensions="using:WinRTXamlToolkit.Controls.Extensions"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:convertersMain="using:WinPhone.App.Common.Converters.Main">
-    <Page.Resources>
+    xmlns:convertersMain="using:WinPhone.App.Common.Converters.Main"
+    xmlns:views="using:WinPhone.App.Views">
+    <views:BasePage.Resources>
         <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
         <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
         <main:StaticPivotItems x:Key="StaticPivotItems"/>
-    </Page.Resources>
+    </views:BasePage.Resources>
     <Pivot x:Name="Pivot">
         <interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="SelectionChanged">
@@ -30,7 +31,9 @@
 
         <PivotItem Header="My Shows">
             <StackPanel>
+                <ProgressRing Height="25" Width="25" IsActive="True" Visibility="{Binding Path=Processing, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
                 <ListView ItemsSource="{Binding MyShows.Shows}" 
+                           Visibility="{Binding Path=Processing, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                 SelectionMode="{Binding MyShows.IsShowSelectionEnabled, Converter={StaticResource BooleanToListViewSelectionModeConverter}}"
                           extensions:ListViewExtensions.BindableSelection="{Binding MyShows.SelectedShows, Mode=TwoWay}">
                     <ListView.ItemTemplate>
@@ -45,13 +48,36 @@
             </StackPanel>
         </PivotItem>
         <PivotItem Header="Suggections">
-            <StackPanel>
-                <TextBlock Text="page2"></TextBlock>
-            </StackPanel>
+            <Grid>
+                <ProgressRing Height="25" Width="25" IsActive="True" Grid.Column="0" Grid.Row="0"
+                              Visibility="{Binding Path=Processing, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
+                <GridView ItemsSource="{Binding Suggestions}" 
+                          Grid.Column="0" Grid.Row="0"
+                          ScrollViewer.VerticalScrollMode="Auto"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                          IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="150" Height="150" Margin="15,15,15,15">
+                                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                    <Image Source="{Binding Image}" Stretch="UniformToFill"></Image>
+                                </Border>
+                                <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" 
+                                               Style="{StaticResource TitleTextBlockStyle}"
+                                               TextWrapping="Wrap"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
         </PivotItem>
         <PivotItem Header="My Profile">
             <StackPanel>
-                <Grid>
+                <ProgressRing Height="25" Width="25" IsActive="True" Visibility="{Binding Path=Processing, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
+                <Grid Visibility="{Binding Path=Processing, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100">                            
                         </ColumnDefinition>
@@ -80,21 +106,13 @@
                 <AppBarButton Command="{Binding AddShowCommand}" Icon="Add" Label="add new" 
                               Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
                     ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}"/>
-                <AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
+                <!--<AppBarButton Command="{Binding MyShows.ShowsSelectionCommand}" Icon="Accept" Label="check" 
                               Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
                     ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}"/>
                 <AppBarButton Command="{Binding MyShows.DeleteShowsCommand}" Icon="Delete" Label="delete" 
                               Visibility="{Binding CurrentPivotItem, Converter={StaticResource PivotItemToVisibilityConverter}, 
                     ConverterParameter={Binding MyShows, Source={StaticResource StaticPivotItems}}}">
-                    <!--Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=Self}}"-->
-                    <!--<AppBarButton.Visibility>
-                        <Binding Converter="CommandGroupToVisibilityConverter">
-                            <Binding.ConverterParameter>
-                                <system:String>MyShows</system:String>
-                            </Binding.ConverterParameter>
-                        </Binding>
-                    </AppBarButton.Visibility>-->
-                </AppBarButton>
+                </AppBarButton>-->
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="logoff" Command="{Binding LogOutCommand, Source={StaticResource Locator}}"/>
@@ -102,4 +120,4 @@
         </CommandBar>
         
     </Page.BottomAppBar>
-</Page>
+</views:BasePage>
