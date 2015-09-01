@@ -2,6 +2,8 @@
 
 namespace WinPhone.App.Models.ShowDetails
 {
+    using System.Collections.ObjectModel;
+
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Shows;
 
@@ -9,7 +11,7 @@ namespace WinPhone.App.Models.ShowDetails
     {
         private ShowInfo show;
 
-        private List<UserEpisode> episodes;
+        private ObservableCollection<UserEpisode> episodes;
 
         private ShowStatus selectedStatus;
 
@@ -29,7 +31,7 @@ namespace WinPhone.App.Models.ShowDetails
             }
         }
 
-        public List<UserEpisode> Episodes
+        public ObservableCollection<UserEpisode> Episodes
         {
             get
             {

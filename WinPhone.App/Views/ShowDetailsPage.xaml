@@ -6,14 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:showDetails="using:WinPhone.App.ViewModels.ShowDetails"
-    xmlns:rating="using:Bratched.Tools.RatingControl"
     xmlns:ratingControl="using:JISoft.RatingControl"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=showDetails:ShowDetailsViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding ShowDetails, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid x:Name="LayoutRoot">
+    <Grid>
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -23,31 +22,34 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="{Binding UserShow.Show.Title}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+            <TextBlock Text="{Binding UserShow.Show.Title}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" 
+                       CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"
+                       TextWrapping="WrapWholeWords"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" Margin="19,9.5,19,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Image Source="{Binding UserShow.Show.Image}"></Image>
-
-               
-            </StackPanel>
-            
-            <StackPanel Margin="10"  Grid.Column="1">
-                <TextBlock Text="{Binding UserShow.Show.Description}" TextWrapping="Wrap"></TextBlock>
-                <ratingControl:Rating 
-                AllowSelectingZero="True" ReadOnly="True"
-                RatingItemCount="5" Value="{Binding UserShow.Show.Rating}">
+        <ProgressRing Height="25" Width="25" IsActive="True" Grid.Row="1"
+                      Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter} }"></ProgressRing>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="19,9.5,19,0">
+            <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter} }" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" MinWidth="60" />
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Source="{Binding UserShow.Show.Image}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top"></Image>
+                <ratingControl:Rating Grid.Column="0" Grid.Row="1" Width="60"
+                                      VerticalAlignment="Top"
+                                      ReadOnly="True"
+                    RatingItemCount="5" Value="{Binding UserShow.Show.Rating}">
                     <ratingControl:Rating.FilledItemStyle>
                         <Style TargetType="ratingControl:RatingItem">
                             <Setter Property="Background" Value="Goldenrod"/>
@@ -63,11 +65,43 @@
                         </Style>
                     </ratingControl:Rating.UnfilledItemStyle>
                 </ratingControl:Rating>
-            </StackPanel>
+                <StackPanel Margin="10,0,0,0"  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+                    <TextBlock Text="{Binding UserShow.Show.RuTitle}" TextWrapping="Wrap"
+                               Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="{Binding UserShow.Show.Description}" TextWrapping="Wrap"></TextBlock>
+                </StackPanel>
+            </Grid>
 
-           
-        </Grid>
-
-        
+            <ComboBox ItemsSource="{Binding UserShow.Statuses}" Header="Status"
+                     SelectedValue="{Binding UserShow.SelectedStatus}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Value}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <ListView ItemsSource="{Binding UserShow.Episodes}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Episode.ShortName}" 
+                                            Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding IsWatched}"></CheckBox>
+                            </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </local:BasePage>

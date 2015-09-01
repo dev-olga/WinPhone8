@@ -33,11 +33,13 @@ namespace WinPhone.App.Views
 
         public ShowDetailsPage() : base()
         {
+            NavigationCacheMode = NavigationCacheMode.Disabled;
             this.InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             if (this.DataContext is IShowDetailData)
             {
                 if (e.Parameter as ShowRatingInfo != null)
@@ -49,8 +51,6 @@ namespace WinPhone.App.Views
                     await(this.DataContext as IShowDetailData).Load(e.Parameter as UserShow);
                 }
             }
-
-            this.NavigationHelper.OnNavigatedTo(e);
         }
     }
 }

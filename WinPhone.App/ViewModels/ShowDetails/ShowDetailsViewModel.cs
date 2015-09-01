@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinPhone.App.ViewModels.ShowDetails
 {
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
 
     using WinPhone.App.Common;
@@ -21,6 +22,8 @@ namespace WinPhone.App.ViewModels.ShowDetails
     {
         private Models.ShowDetails.UserShow userShow;
 
+        private bool isLoading;
+
         private enum OfflineDataKeys
         {
             ShowWithEpisode,
@@ -30,9 +33,27 @@ namespace WinPhone.App.ViewModels.ShowDetails
         public ShowDetailsViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
             : base(authorizationService, apiProvider)
         {
+            this.isLoading = true;
+            this.userShow = new Models.ShowDetails.UserShow();
             //this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
         }
 
+        public bool IsLoading
+        {
+            get
+            {
+                return this.isLoading;
+            }
+            private set
+            {
+                if (this.isLoading != value)
+                {
+                    this.isLoading = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+
+        }
         public Models.ShowDetails.UserShow UserShow
         {
             get
@@ -62,19 +83,20 @@ namespace WinPhone.App.ViewModels.ShowDetails
             var model = new Models.ShowDetails.UserShow();
             model.Show = show;
             model.Episodes =
-                episodes.Select(
+                new ObservableCollection<UserEpisode>(show.Episodes.Values.Select(
                     episode =>
                     new UserEpisode
                         {
-                            Episode = show.Episodes.Values.FirstOrDefault(e => e.Id == episode.Id),
+                            Episode = episode,
                             IsWatched = episodes.Any(e => e.Id == episode.Id)
-                        }).ToList();
+                        }));
 
             this.UserShow = model;
         }
 
         public async Task Load(long showId)
         {
+            this.IsLoading = true;
             var mananger = OfflineProvider.GetOfflineManager();
             if (InternetHelper.IsNetworkAvailable())
             {
@@ -86,6 +108,7 @@ namespace WinPhone.App.ViewModels.ShowDetails
                 await mananger.SaveAsync(OfflineDataKeys.WhatchedEpisodes, episodes);
             }
             this.CreateModel();
+            this.IsLoading = false;
         }
 
         public async Task Load(UserShow show)
