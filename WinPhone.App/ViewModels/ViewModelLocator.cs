@@ -42,7 +42,9 @@ namespace WinPhone.App.ViewModels
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<ShowDetailsViewModel>();
+               return new ShowDetailsViewModel(
+                    ServiceLocator.Current.GetInstance<IAuthorizationService>(), 
+                    ServiceLocator.Current.GetInstance<ApiProvider>());
             }
         }
         
@@ -62,12 +64,12 @@ namespace WinPhone.App.ViewModels
             SimpleIoc.Default.Register<IStorage>(() => offlineStorage);
 
             var apiProvider = new ApiProvider();
+            SimpleIoc.Default.Register<ApiProvider>(() => apiProvider);
             var authorizationService = new AuthorizationService(apiProvider);
             SimpleIoc.Default.Register<IAuthorizationService>(() => authorizationService);
 
             SimpleIoc.Default.Register<LoginViewModel>(() => new LoginViewModel(authorizationService));
             SimpleIoc.Default.Register<MainViewModel>(() => new MainViewModel(authorizationService, apiProvider));
-            SimpleIoc.Default.Register<ShowDetailsViewModel>(() => new ShowDetailsViewModel(authorizationService, apiProvider));
 
             SimpleIoc.Default.Register<LogOutCommand>(() => new LogOutCommand(authorizationService));
         }

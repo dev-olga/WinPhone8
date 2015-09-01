@@ -33,8 +33,7 @@ namespace WinPhone.App.ViewModels.ShowDetails
         public ShowDetailsViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
             : base(authorizationService, apiProvider)
         {
-            this.isLoading = true;
-            this.userShow = new Models.ShowDetails.UserShow();
+            //this.IsLoading = true;
             //this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
         }
 

@@ -27,15 +27,15 @@
 
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="{Binding UserShow.Show.Title}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" 
+            <TextBlock Text="{Binding UserShow.Show.Title, Mode=OneWay}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"
                        TextWrapping="WrapWholeWords"/>
         </StackPanel>
 
         <ProgressRing Height="25" Width="25" IsActive="True" Grid.Row="1"
-                      Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter} }"></ProgressRing>
+                      Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter} }"></ProgressRing>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="19,9.5,19,0">
-            <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter} }" >
+            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter} }" >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" MinWidth="60" />
@@ -45,11 +45,11 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding UserShow.Show.Image}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top"></Image>
+                    <Image Source="{Binding UserShow.Show.Image, Mode=OneWay}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top"></Image>
                 <ratingControl:Rating Grid.Column="0" Grid.Row="1" Width="60"
                                       VerticalAlignment="Top"
                                       ReadOnly="True"
-                    RatingItemCount="5" Value="{Binding UserShow.Show.Rating}">
+                    RatingItemCount="5" Value="{Binding UserShow.Show.Rating, Mode=OneWay}">
                     <ratingControl:Rating.FilledItemStyle>
                         <Style TargetType="ratingControl:RatingItem">
                             <Setter Property="Background" Value="Goldenrod"/>
@@ -66,9 +66,9 @@
                     </ratingControl:Rating.UnfilledItemStyle>
                 </ratingControl:Rating>
                 <StackPanel Margin="10,0,0,0"  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
-                    <TextBlock Text="{Binding UserShow.Show.RuTitle}" TextWrapping="Wrap"
+                        <TextBlock Text="{Binding UserShow.Show.RuTitle, Mode=OneWay}" TextWrapping="Wrap"
                                Style="{ThemeResource TitleTextBlockStyle}"/>
-                    <TextBlock Text="{Binding UserShow.Show.Description}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Text="{Binding UserShow.Show.Description, Mode=OneWay}" TextWrapping="Wrap"></TextBlock>
                 </StackPanel>
             </Grid>
 
@@ -94,7 +94,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="30"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Episode.ShortName}" 
+                                <TextBlock Grid.Column="0" Text="{Binding Episode.ShortName, Mode=OneWay}" 
                                             Style="{ThemeResource ListViewItemTextBlockStyle}"/>
                                 <CheckBox Grid.Column="1" IsChecked="{Binding IsWatched}"></CheckBox>
                             </Grid>
