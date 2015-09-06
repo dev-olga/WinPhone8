@@ -12,8 +12,6 @@ namespace WinPhone.App.Models.ShowDetails
     {
         private ShowInfo show;
 
-        //private ObservableCollection<UserEpisode> episodes;
-
         private List<UserEpisode> episodes;
 
         private ShowStatus selectedStatus;
@@ -83,7 +81,7 @@ namespace WinPhone.App.Models.ShowDetails
         {
             get
             {
-                return new List<ShowStatus>()
+                return new List<ShowStatus>
                                 {
                                     ShowStatus.Watching, 
                                     ShowStatus.Later, 

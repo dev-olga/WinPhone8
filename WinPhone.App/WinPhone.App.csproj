@@ -99,6 +99,7 @@
     <Compile Include="Common\Converters\Main\SelectionChangedEventAgrsToShowRatingInfoConveter.cs" />
     <Compile Include="Common\Converters\ShowDetails\SeasonNameConverter.cs" />
     <Compile Include="Common\Converters\ShowDetails\ShowStatusConverter.cs" />
+    <Compile Include="Common\Helpers\ExpressionHelper.cs" />
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />

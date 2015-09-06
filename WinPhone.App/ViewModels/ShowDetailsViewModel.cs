@@ -9,6 +9,7 @@ namespace WinPhone.App.ViewModels
     using System.ComponentModel;
 
     using WinPhone.App.Common;
+    using WinPhone.App.Common.Helpers;
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models.ShowDetails;
@@ -21,6 +22,8 @@ namespace WinPhone.App.ViewModels
 
         private bool isLoading;
 
+        private RelayCommand<int> updateEpisode;
+
         private enum OfflineDataKeys
         {
             UserShow
@@ -29,6 +32,11 @@ namespace WinPhone.App.ViewModels
         public ShowDetailsViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
             : base(authorizationService, apiProvider)
         {    
+            //this.updateEpisode = new RelayCommand<int>(
+            //    id =>
+            //        {
+            //            this.ApiProvider.ProfileService.
+            //        });
         }
 
         public bool IsLoading
@@ -64,13 +72,20 @@ namespace WinPhone.App.ViewModels
             }
         }
 
-        private async void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
+        private async void UserShowPropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == ExpressionHelper.GetFullPropertyName(() => this.UserShow.SelectedStatus))
+            {
+                await this.ApiProvider.ProfileService.UpdateShowStatusAsync(
+                    this.AuthorizationService.User.AuthorizationToken,
+                    this.UserShow.Show.Id,
+                    this.UserShow.SelectedStatus);
+            }
+
             await OfflineProvider.GetOfflineManager().SaveAsync(
                 OfflineDataKeys.UserShow, 
                 this.UserShow,
-                GetStorageParameters(this.UserShow.Show.Id)
-                );
+                GetStorageParameters(this.UserShow.Show.Id));
         }
 
         private static IDictionary<string, object> GetStorageParameters(long id)
@@ -111,13 +126,13 @@ namespace WinPhone.App.ViewModels
 
             this.UserShow = model;
             this.UserShow.SelectedStatus = status;
-            this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
+            this.UserShow.PropertyChanged += this.UserShowPropertyChangedEventHandler;
             this.IsLoading = false;
         }
 
         public void Dispose()
         {
-            this.UserShow.PropertyChanged -= this.PropertyChangedEventHandler;
+            this.UserShow.PropertyChanged -= this.UserShowPropertyChangedEventHandler;
         }
     }
 }
