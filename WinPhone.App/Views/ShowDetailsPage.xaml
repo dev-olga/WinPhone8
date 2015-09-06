@@ -8,11 +8,14 @@
     xmlns:showDetails="using:WinPhone.App.ViewModels.ShowDetails"
     xmlns:ratingControl="using:JISoft.RatingControl"
     xmlns:viewModels="using:WinPhone.App.ViewModels"
+    xmlns:showDetails1="using:WinPhone.App.Common.Converters.ShowDetails"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewModels:ShowDetailsViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding ShowDetails, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <local:BasePage.Resources>
+        <showDetails1:ShowStatusConverter x:Key="ShowStatusConverter"/>
+    </local:BasePage.Resources>
     <Grid>
 
         <Grid.ChildrenTransitions>
@@ -76,11 +79,11 @@
                     Header="Status"
                     ItemsSource="{Binding UserShow.Statuses, Mode=OneTime}" 
                     SelectedItem="{Binding UserShow.SelectedStatus, Mode=TwoWay}">
-                <!--<ComboBox.ItemTemplate>
+                <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource ShowStatusConverter}}"></TextBlock>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>-->
+                </ComboBox.ItemTemplate>
             </ComboBox>
             
             <ListView ItemsSource="{Binding UserShow.Episodes}">

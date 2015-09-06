@@ -42,13 +42,10 @@ namespace WinPhone.App.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (this.DataContext is IShowDetailData)
+            if (this.DataContext is IShowDetailData && e.Parameter as ToNavigationParameter != null)
             {
-                if (e.Parameter as ToNavigationParameter != null)
-                {
-                    var param = (e.Parameter as ToNavigationParameter);
-                    await(this.DataContext as IShowDetailData).Load(param.ShowId, param.Status);
-                }
+                var param = e.Parameter as ToNavigationParameter;
+                await(this.DataContext as IShowDetailData).Load(param.ShowId, param.Status);
             }
         }
     }

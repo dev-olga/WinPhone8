@@ -15,7 +15,6 @@ namespace WinPhone.App.Models.ShowDetails
         private ObservableCollection<UserEpisode> episodes;
 
         private ShowStatus selectedStatus;
-        //private int selectedStatus;
 
         public ShowInfo Show
         {
@@ -65,54 +64,6 @@ namespace WinPhone.App.Models.ShowDetails
             }
         }
 
-        //public int SelectedStatus
-        //{
-        //    get
-        //    {
-        //        return this.selectedStatus;
-        //    }
-        //    set
-        //    {
-        //        if (this.selectedStatus != value)
-        //        {
-        //            this.selectedStatus = value;
-        //            this.NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public KeyValuePair<ShowStatus, string> SelectedStatusItem
-        //{
-        //    get
-        //    {
-        //        return this.Statuses.FirstOrDefault(s=>s.Key == this.SelectedStatus);
-        //    }
-        //    set
-        //    {
-        //        var statusItem = this.Statuses.FirstOrDefault(s => s.Key == this.SelectedStatus);
-        //        if (statusItem.Key != value.Key)
-        //        {
-        //            this.SelectedStatus = value.Key;
-        //            this.NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public List<KeyValuePair<ShowStatus, string>> Statuses
-        //{
-        //    get
-        //    {
-        //        return new List<KeyValuePair<ShowStatus, string>>()
-        //                        {
-        //                            new KeyValuePair<ShowStatus, string>(ShowStatus.None, "Choose status"),
-        //                            new KeyValuePair<ShowStatus, string>(ShowStatus.Watching, "Watching"),
-        //                            new KeyValuePair<ShowStatus, string>(ShowStatus.Later, "Later"),
-        //                            new KeyValuePair<ShowStatus, string>(ShowStatus.Cancelled, "Cancelled"),
-        //                            new KeyValuePair<ShowStatus, string>(ShowStatus.Remove, "Not watching")
-        //                        };
-        //    }
-        //}
-
         public List<ShowStatus> Statuses
         {
             get
@@ -121,24 +72,10 @@ namespace WinPhone.App.Models.ShowDetails
                                 {
                                     ShowStatus.Watching, 
                                     ShowStatus.Later, 
-                                    ShowStatus.Cancelled,
-                                    ShowStatus.Remove
+                                    ShowStatus.Remove, 
+                                    ShowStatus.Cancelled
                                 };
             }
         } 
-
-        //public List<int> Statuses
-        //{
-        //    get
-        //    {
-        //        return new List<int>()
-        //                        {
-        //                            (int)ShowStatus.Watching, 
-        //                            (int)ShowStatus.Later, 
-        //                            (int)ShowStatus.Remove, 
-        //                            (int)ShowStatus.Cancelled
-        //                        };
-        //    }
-        //} 
     }
 }
