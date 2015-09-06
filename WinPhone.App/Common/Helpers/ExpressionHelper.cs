@@ -27,6 +27,13 @@ namespace WinPhone.App.Common.Helpers
             return nestedExpression;
         }
 
+        public static string GetFullPropertyName<T, TProp>(
+            Expression<Func<T>> expression,
+            Expression<Func<T, TProp>> property)
+        {
+            return GetFullPropertyName(GetExpressionForProperty(expression, property));
+        }
+
         /// <summary>
         /// Get dot separated full property name.
         /// For lambda a.B.C.Property value will be like "B.C.Property"

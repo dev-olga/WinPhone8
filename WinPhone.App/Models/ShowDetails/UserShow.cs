@@ -5,6 +5,7 @@ namespace WinPhone.App.Models.ShowDetails
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using WinPhone.App.Common.Helpers;
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Shows;
 
@@ -56,7 +57,9 @@ namespace WinPhone.App.Models.ShowDetails
                 {
                     this.episodes = value;
                     this.NotifyPropertyChanged();
-                    this.NotifyPropertyChanged("Seasons");
+                    var inst = this;
+                    var seasonPropName = ExpressionHelper.GetFullPropertyName(() => inst.Seasons);
+                    this.NotifyPropertyChanged(seasonPropName);
                 }
             }
         }
