@@ -19,7 +19,6 @@
                 return await ApplicationData.Current.LocalFolder.CreateFolderAsync(FolderName);
             }
             return await ApplicationData.Current.LocalFolder.GetFolderAsync(FolderName);
-            //return ApplicationData.Current.LocalFolder;
         }
     }
 }

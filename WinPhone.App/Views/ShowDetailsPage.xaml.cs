@@ -28,7 +28,7 @@ namespace WinPhone.App.Views
             if (this.DataContext is IShowDetailData && e.Parameter as ToNavigationParameter != null)
             {
                 var param = e.Parameter as ToNavigationParameter;
-                await (this.DataContext as IShowDetailData).Load(param);
+                await(this.DataContext as IShowDetailData).Load(param);
             }
         }
     }

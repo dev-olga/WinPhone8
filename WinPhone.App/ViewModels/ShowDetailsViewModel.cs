@@ -102,6 +102,7 @@ namespace WinPhone.App.ViewModels
             return new Dictionary<string, object> { { "id", id } };
         }
 
+       // private static int toggle = 0;
         public async Task Load(ToNavigationParameter inputParameters)
         {
             this.Title = inputParameters.Title;
@@ -109,7 +110,9 @@ namespace WinPhone.App.ViewModels
             this.IsLoading = true;
             var mananger = OfflineProvider.GetOfflineManager();
             UserShowData data = null;
-            if (InternetHelper.IsNetworkAvailable())
+            
+           // toggle++;
+            if (/*toggle % 2 == 1 && */ InternetHelper.IsNetworkAvailable())
             {
                 try
                 {
@@ -145,6 +148,10 @@ namespace WinPhone.App.ViewModels
 
         public async Task SaveState()
         {
+            if (this.UserShow == null)
+            {
+                return;
+            }
             var data = new UserShowData()
             {
                 Show = this.UserShow.Show,

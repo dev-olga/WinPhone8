@@ -36,7 +36,14 @@ namespace WinPhone.App.Common.Offline
             using (var stream =
                     await storageFolder.OpenStreamForReadAsync(this.GetKeyName(key, parameters)))
             {
-                return (T)serializer.ReadObject(stream);
+                try
+                {
+                    return (T)serializer.ReadObject(stream);
+                }
+                catch (Exception ex)
+                {
+                    return default(T);
+                }
             }
         }
 

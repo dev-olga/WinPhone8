@@ -8,9 +8,6 @@ namespace WinPhone.MyShows.Models.Shows
 
     using Newtonsoft.Json;
 
-    //using WinPhone.Interfaces.Models.Shows;
-
-    [DataContract]
     public class ShowInfo : BaseShow/*, IShowInfo*/
     {
         [JsonProperty("year")]

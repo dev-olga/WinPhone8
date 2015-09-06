@@ -6,8 +6,7 @@ namespace WinPhone.App.Models.ShowDetails
 
     using WinPhone.MyShows.Models.Shows;
 
-    [DataContract]
-    internal class UserShowData
+    public class UserShowData
     {
         public ShowInfo Show { get; set; }
 
