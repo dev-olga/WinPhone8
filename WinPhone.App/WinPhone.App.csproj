@@ -97,6 +97,7 @@
     <Compile Include="Common\Converters\BooleanToListViewSelectionModeConverter.cs" />
     <Compile Include="Common\Converters\Main\PivotItemEventAgrsToPivotItemConveter.cs" />
     <Compile Include="Common\Converters\Main\SelectionChangedEventAgrsToShowRatingInfoConveter.cs" />
+    <Compile Include="Common\Converters\ShowDetails\SeasonNameConverter.cs" />
     <Compile Include="Common\Converters\ShowDetails\ShowStatusConverter.cs" />
     <Compile Include="Common\Helpers\InternetHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />

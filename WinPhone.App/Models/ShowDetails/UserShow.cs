@@ -12,7 +12,9 @@ namespace WinPhone.App.Models.ShowDetails
     {
         private ShowInfo show;
 
-        private ObservableCollection<UserEpisode> episodes;
+        //private ObservableCollection<UserEpisode> episodes;
+
+        private List<UserEpisode> episodes;
 
         private ShowStatus selectedStatus;
 
@@ -32,11 +34,23 @@ namespace WinPhone.App.Models.ShowDetails
             }
         }
 
-        public ObservableCollection<UserEpisode> Episodes
+        public Dictionary<int, List<UserEpisode>> Seasons
         {
             get
             {
-                return this.episodes;
+                var seasons =
+                    this.Episodes.GroupBy(e => e.Episode.SeasonNumber)
+                        .OrderBy(s => s.Key)
+                        .ToDictionary(s => s.Key, s => s.OrderBy(e => e.Episode.SequenceNumber).ToList());
+                return seasons;
+            }
+        }
+
+        public List<UserEpisode> Episodes
+        {
+            get
+            {
+                return this.episodes ?? new List<UserEpisode>();
             }
             set
             {
@@ -44,6 +58,7 @@ namespace WinPhone.App.Models.ShowDetails
                 {
                     this.episodes = value;
                     this.NotifyPropertyChanged();
+                    this.NotifyPropertyChanged("Seasons");
                 }
             }
         }

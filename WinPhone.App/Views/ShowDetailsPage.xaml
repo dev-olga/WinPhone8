@@ -15,6 +15,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <local:BasePage.Resources>
         <showDetails1:ShowStatusConverter x:Key="ShowStatusConverter"/>
+        <showDetails1:SeasonNameConverter x:Key="SeasonNameConverter"/>
+        <CollectionViewSource x:Name="SeasonsGroup" IsSourceGrouped="True" ItemsPath="Value" Source="{Binding UserShow.Seasons}"/>
     </local:BasePage.Resources>
     <Grid>
 
@@ -85,27 +87,43 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            
-            <ListView ItemsSource="{Binding UserShow.Episodes}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="30"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
+
+            <GridView ItemsSource="{Binding Source={StaticResource SeasonsGroup}}">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding Episode.ShortName, Mode=OneWay}" 
                                             Style="{ThemeResource ListViewItemTextBlockStyle}"/>
                                 <CheckBox Grid.Column="1" IsChecked="{Binding IsWatched}"></CheckBox>
                             </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                    <GridView.GroupStyle>
+                        <GroupStyle HidesIfEmpty="True">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Key, Converter={StaticResource SeasonNameConverter}}" 
+                                           Style="{StaticResource HeaderTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+
+                        </GroupStyle>
+                    </GridView.GroupStyle>
+                </GridView>
         </StackPanel>
         </ScrollViewer>
     </Grid>

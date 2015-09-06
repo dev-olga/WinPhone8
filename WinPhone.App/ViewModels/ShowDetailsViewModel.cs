@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace WinPhone.App.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
 
@@ -65,7 +66,16 @@ namespace WinPhone.App.ViewModels
 
         private async void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {
-            await OfflineProvider.GetOfflineManager().SaveAsync(OfflineDataKeys.UserShow, this.UserShow);
+            await OfflineProvider.GetOfflineManager().SaveAsync(
+                OfflineDataKeys.UserShow, 
+                this.UserShow,
+                GetStorageParameters(this.UserShow.Show.Id)
+                );
+        }
+
+        private static IDictionary<string, object> GetStorageParameters(long id)
+        {
+            return new Dictionary<string, object> { { "id", id } };
         }
 
         public async Task Load(long showId, ShowStatus status)
@@ -84,27 +94,30 @@ namespace WinPhone.App.ViewModels
                 model = new UserShow();
                 model.Show = show;
                 model.Episodes =
-                    new ObservableCollection<UserEpisode>(
                         show.Episodes.Values.Select(
                             episode =>
-                            new UserEpisode { Episode = episode, IsWatched = episodes.Any(e => e.Id == episode.Id) }));
+                            new UserEpisode
+                                {
+                                    Episode = episode, 
+                                    IsWatched = episodes.Any(e => e.Id == episode.Id)
+                                }).ToList();
 
-                await mananger.SaveAsync(OfflineDataKeys.UserShow, model);
+                await mananger.SaveAsync(OfflineDataKeys.UserShow, model, GetStorageParameters(showId));
             }
             else
             {
-                model = await mananger.GetAsync<UserShow>(OfflineDataKeys.UserShow);
+                model = await mananger.GetAsync<UserShow>(OfflineDataKeys.UserShow, GetStorageParameters(showId));
             }
 
             this.UserShow = model;
             this.UserShow.SelectedStatus = status;
-            //this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
+            this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
             this.IsLoading = false;
         }
 
         public void Dispose()
         {
-            //this.UserShow.PropertyChanged -= this.PropertyChangedEventHandler;
+            this.UserShow.PropertyChanged -= this.PropertyChangedEventHandler;
         }
     }
 }
