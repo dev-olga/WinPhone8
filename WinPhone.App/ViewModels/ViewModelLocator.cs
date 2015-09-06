@@ -16,8 +16,6 @@ namespace WinPhone.App.ViewModels
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Services;
-    using WinPhone.App.ViewModels.Login;
-    using WinPhone.App.ViewModels.Main;
     using WinPhone.App.ViewModels.ShowDetails;
 
     internal class ViewModelLocator

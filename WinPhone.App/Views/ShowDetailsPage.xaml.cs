@@ -20,10 +20,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App.Views
 {
+    using WinPhone.App.Models.ShowDetails;
     using WinPhone.App.ViewModels;
     using WinPhone.App.ViewModels.ShowDetails;
-    using WinPhone.MyShows.Models.Profile;
     using WinPhone.MyShows.Models.Shows;
+
+    using UserShow = WinPhone.MyShows.Models.Profile.UserShow;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -42,13 +44,10 @@ namespace WinPhone.App.Views
             base.OnNavigatedTo(e);
             if (this.DataContext is IShowDetailData)
             {
-                if (e.Parameter as ShowRatingInfo != null)
+                if (e.Parameter as ToNavigationParameter != null)
                 {
-                    await(this.DataContext as IShowDetailData).Load((e.Parameter as ShowRatingInfo).Id);
-                }
-                else if (e.Parameter as UserShow != null)
-                {
-                    await(this.DataContext as IShowDetailData).Load(e.Parameter as UserShow);
+                    var param = (e.Parameter as ToNavigationParameter);
+                    await(this.DataContext as IShowDetailData).Load(param.ShowId, param.Status);
                 }
             }
         }

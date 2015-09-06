@@ -3,11 +3,10 @@
     using System.Threading.Tasks;
 
     using WinPhone.MyShows.Models.Profile;
+    using WinPhone.MyShows.Models.Shows;
 
     internal interface IShowDetailData
     {
-        Task Load(long showId);
-
-        Task Load(UserShow show);
+        Task Load(long showId, ShowStatus status);
     }
 }

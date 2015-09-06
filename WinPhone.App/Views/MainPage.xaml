@@ -8,13 +8,14 @@
     xmlns:main="using:WinPhone.App.ViewModels.Main"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=main:MainViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     xmlns:extensions="using:WinRTXamlToolkit.Controls.Extensions"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:convertersMain="using:WinPhone.App.Common.Converters.Main"
-    xmlns:views="using:WinPhone.App.Views">
+    xmlns:views="using:WinPhone.App.Views"
+    xmlns:viewModels="using:WinPhone.App.ViewModels">
     <views:BasePage.Resources>
         <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
         <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
@@ -62,7 +63,8 @@
                         <core:EventTriggerBehavior EventName="SelectionChanged">
                             <core:InvokeCommandAction Command="{Binding SelectShowCommand}"
                                           InputConverter="{StaticResource SelectionChangedEventAgrsToShowRatingInfoConveter}"
-                                          InputConverterParameter="{Binding ElementName=Suggections, Path=SelectedItem}"  />
+                                           InputConverterParameter="{Binding ElementName=Suggections, Path=SelectedItem}" >
+                            </core:InvokeCommandAction>
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                     

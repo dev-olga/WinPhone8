@@ -14,7 +14,7 @@ namespace WinPhone.App.Common.Converters.Main
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return parameter as ShowRatingInfo;
+            return ((parameter as BaseShow) ?? (new BaseShow())).Id;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

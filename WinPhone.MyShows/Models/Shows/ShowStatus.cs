@@ -4,19 +4,16 @@
 
     public enum ShowStatus
     {
-        [Display("")]
-        None = 0,
+        [Display("remove")]
+        Remove = 0,
 
         [Display("watching")]
-        Watching = 1,
+        Watching,
 
         [Display("later")]
         Later,
 
         [Display("cancelled")]
-        Cancelled,
-
-        [Display("remove")]
-        Remove 
+        Cancelled
     }
 }

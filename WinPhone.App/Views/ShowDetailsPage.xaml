@@ -7,8 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:showDetails="using:WinPhone.App.ViewModels.ShowDetails"
     xmlns:ratingControl="using:JISoft.RatingControl"
+    xmlns:viewModels="using:WinPhone.App.ViewModels"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type=showDetails:ShowDetailsViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance Type=viewModels:ShowDetailsViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding ShowDetails, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -71,14 +72,15 @@
                         <TextBlock Text="{Binding UserShow.Show.Description, Mode=OneWay}" TextWrapping="Wrap"></TextBlock>
                 </StackPanel>
             </Grid>
-
-            <ComboBox ItemsSource="{Binding UserShow.Statuses}" Header="Status"
-                     SelectedValue="{Binding UserShow.SelectedStatus}">
-                <ComboBox.ItemTemplate>
+                <ComboBox 
+                    Header="Status"
+                    ItemsSource="{Binding UserShow.Statuses, Mode=OneTime}" 
+                    SelectedItem="{Binding UserShow.SelectedStatus, Mode=TwoWay}">
+                <!--<ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Value}"></TextBlock>
+                        <TextBlock Text="{Binding}"></TextBlock>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
+                </ComboBox.ItemTemplate>-->
             </ComboBox>
             
             <ListView ItemsSource="{Binding UserShow.Episodes}">

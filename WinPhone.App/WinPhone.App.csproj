@@ -108,21 +108,22 @@
     <Compile Include="Interfaces\IApiProvider.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
     <Compile Include="Common\Offline\LocalStorage.cs" />
+    <Compile Include="Models\ShowDetails\ToNavigationParameter.cs" />
     <Compile Include="Models\ShowDetails\UserEpisode.cs" />
     <Compile Include="Models\ShowDetails\UserShow.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\Main\MyShowsViewModel.cs" />
+    <Compile Include="Models\Main\MyShowsViewModel.cs" />
     <Compile Include="Services\ApiProvider.cs" />
     <Compile Include="ViewModels\AuthorizedViewModel.cs" />
-    <Compile Include="ViewModels\Main\PivotItems.cs">
+    <Compile Include="Models\Main\PivotItems.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\Main\MainViewModel.cs" />
-    <Compile Include="ViewModels\Main\StaticPivotItems.cs">
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Models\Main\StaticPivotItems.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\IShowDetailData.cs" />
-    <Compile Include="ViewModels\ShowDetails\ShowDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ShowDetailsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\BasePage.xaml.cs">
       <DependentUpon>BasePage.xaml</DependentUpon>
@@ -139,7 +140,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Authorization\AuthorizationService.cs" />
     <Compile Include="Services\Authorization\CredentialsStorage.cs" />
-    <Compile Include="ViewModels\Login\LoginViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Views\ShowDetailsPage.xaml.cs">
       <DependentUpon>ShowDetailsPage.xaml</DependentUpon>
     </Compile>
