@@ -9,7 +9,7 @@ namespace WinPhone.App.Models.ShowDetails
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Shows;
 
-    internal class UserEpisode : NotificationViewModel
+    public class UserEpisode : NotificationViewModel
     {
         private Episode episode;
 

@@ -26,15 +26,13 @@ namespace WinPhone.App.ViewModels.ShowDetails
 
         private enum OfflineDataKeys
         {
-            ShowWithEpisode,
-            WhatchedEpisodes
+            UserShow
         }
 
         public ShowDetailsViewModel(IAuthorizationService authorizationService, IApiProvider apiProvider)
             : base(authorizationService, apiProvider)
         {
-            //this.IsLoading = true;
-            //this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
+            //this.IsLoading = true;            
         }
 
         public bool IsLoading
@@ -43,6 +41,7 @@ namespace WinPhone.App.ViewModels.ShowDetails
             {
                 return this.isLoading;
             }
+
             private set
             {
                 if (this.isLoading != value)
@@ -57,7 +56,7 @@ namespace WinPhone.App.ViewModels.ShowDetails
         {
             get
             {
-                return this.userShow;
+                return this.userShow ?? (this.userShow = new Models.ShowDetails.UserShow());
             }
             set
             {
@@ -69,52 +68,48 @@ namespace WinPhone.App.ViewModels.ShowDetails
             }
         }
 
-        //private async void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
-        //{
-        //    await OfflineProvider.GetOfflineManager().GetAsync<Models.ShowDetails.UserShow>(OfflineDataKeys.UserShow);
-        //}
-
-        private async void CreateModel()
+        private async void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {
-            var mananger = OfflineProvider.GetOfflineManager();
-            var show = await mananger.GetAsync<ShowInfo>(OfflineDataKeys.ShowWithEpisode);
-            var episodes = await mananger.GetAsync<List<WatchedEpisode>>(OfflineDataKeys.WhatchedEpisodes);
-            var model = new Models.ShowDetails.UserShow();
-            model.Show = show;
-            model.Episodes =
-                new ObservableCollection<UserEpisode>(show.Episodes.Values.Select(
-                    episode =>
-                    new UserEpisode
-                        {
-                            Episode = episode,
-                            IsWatched = episodes.Any(e => e.Id == episode.Id)
-                        }));
-
-            this.UserShow = model;
+            await OfflineProvider.GetOfflineManager().SaveAsync(OfflineDataKeys.UserShow, this.UserShow);
         }
 
         public async Task Load(long showId)
         {
             this.IsLoading = true;
             var mananger = OfflineProvider.GetOfflineManager();
+            Models.ShowDetails.UserShow model;
             if (InternetHelper.IsNetworkAvailable())
             {
                 var show = await this.ApiProvider.ShowsService.GetShowWithEpisodesAsync(showId);
-                var episodes = (await this.ApiProvider.ProfileService.GetWatchedEpisodesAsync(
-                        this.AuthorizationService.User.AuthorizationToken, showId)).Data;               
+                var episodes =
+                    (await
+                     this.ApiProvider.ProfileService.GetWatchedEpisodesAsync(
+                         this.AuthorizationService.User.AuthorizationToken,
+                         showId)).Data;
+                model = new Models.ShowDetails.UserShow();
+                model.Show = show;
+                model.Episodes =
+                    new ObservableCollection<UserEpisode>(
+                        show.Episodes.Values.Select(
+                            episode =>
+                            new UserEpisode { Episode = episode, IsWatched = episodes.Any(e => e.Id == episode.Id) }));
 
-                await mananger.SaveAsync(OfflineDataKeys.ShowWithEpisode, show);
-                await mananger.SaveAsync(OfflineDataKeys.WhatchedEpisodes, episodes);
+                await mananger.SaveAsync(OfflineDataKeys.UserShow, model);
             }
-            this.CreateModel();
+            else
+            {
+                model = await mananger.GetAsync<Models.ShowDetails.UserShow>(OfflineDataKeys.UserShow);
+            }
+
+            this.UserShow = model;
+            this.UserShow.PropertyChanged += this.PropertyChangedEventHandler;
             this.IsLoading = false;
         }
 
         public async Task Load(UserShow show)
         {
-            await this.Load(show.ShowId);
+            await this.Load(show.Id);
             this.UserShow.SelectedStatus = show.Status;
         }
-
     }
 }

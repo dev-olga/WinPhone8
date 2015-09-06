@@ -4,6 +4,9 @@
 
     public enum ShowStatus
     {
+        [Display("")]
+        None = 0,
+
         [Display("watching")]
         Watching = 1,
 

@@ -15,7 +15,7 @@ namespace WinPhone.MyShows.Models.Profile
     public class UserShow : BaseShow
     {
         [JsonProperty("showId")]
-        public long ShowId { get; set; }
+        public override long Id { get; set; }
 
         [JsonProperty("watchStatus")]
         public string WatchStatus { get; set; }

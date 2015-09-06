@@ -35,7 +35,7 @@
         <ProgressRing Height="25" Width="25" IsActive="True" Grid.Row="1"
                       Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter} }"></ProgressRing>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="19,9.5,19,0">
-            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter} }" >
+            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter} }">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" MinWidth="60" />

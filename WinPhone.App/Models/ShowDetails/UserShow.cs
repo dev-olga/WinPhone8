@@ -7,7 +7,7 @@ namespace WinPhone.App.Models.ShowDetails
     using WinPhone.App.ViewModels;
     using WinPhone.MyShows.Models.Shows;
 
-    internal class UserShow : NotificationViewModel
+    public class UserShow : NotificationViewModel
     {
         private ShowInfo show;
 

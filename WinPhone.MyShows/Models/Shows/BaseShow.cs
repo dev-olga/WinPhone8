@@ -2,8 +2,14 @@
 {
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// The base show.
+    /// </summary>
     public class BaseShow
     {
+        [JsonProperty("id")]
+        public virtual long Id { get; set; }
+
         [JsonProperty("title")]
         public string Title { get; set; }
 

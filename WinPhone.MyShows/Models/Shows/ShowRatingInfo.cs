@@ -10,9 +10,6 @@ namespace WinPhone.MyShows.Models.Shows
 
     public class ShowRatingInfo : BaseShow
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
         [JsonProperty("year")]
         public int Year { get; set; }
 

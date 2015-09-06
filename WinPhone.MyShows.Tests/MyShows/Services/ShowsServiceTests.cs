@@ -27,6 +27,20 @@ namespace WinPhone.MyShows.Tests.MyShows.Services
             var res1 = task1.Result;
         }
 
+        [TestMethod]
+        public void GetWatchedEpisodesTests()
+        {
+            var service = new AuthorizationService();
+            var task = service.AuthorizeAsync("_nuit", "test");
+            task.Wait();
+            var res = task.Result;
+
+            var task1 = (new ProfileService()).GetWatchedEpisodesAsync(res.Token, 113);
+            //"PHPSESSID=s8lh2auubkmudcof44nthajhg1; SiteUser[login]=_nuit; SiteUser[password]=06e2268df7b5378019053acbe0c33021"
+            task1.Wait();
+            var res1 = task1.Result;
+        }
+        
 
         [TestMethod]
         public void GetTopShowsTests()

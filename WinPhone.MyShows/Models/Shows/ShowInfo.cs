@@ -11,9 +11,6 @@ namespace WinPhone.MyShows.Models.Shows
 
     public class ShowInfo : BaseShow/*, IShowInfo*/
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
         [JsonProperty("year")]
         public int Year { get; set; }
 
