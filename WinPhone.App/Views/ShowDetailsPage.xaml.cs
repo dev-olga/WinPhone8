@@ -1,31 +1,14 @@
-﻿using WinPhone.App.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
 namespace WinPhone.App.Views
 {
-    using WinPhone.App.Models.ShowDetails;
-    using WinPhone.App.ViewModels;
-    using WinPhone.App.ViewModels.ShowDetails;
-    using WinPhone.MyShows.Models.Shows;
+    using System.Threading.Tasks;
 
-    using UserShow = WinPhone.MyShows.Models.Profile.UserShow;
+    using WinPhone.App.Common;
+    using WinPhone.App.Models.ShowDetails;
+    using WinPhone.App.ViewModels.ShowDetails;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -45,7 +28,7 @@ namespace WinPhone.App.Views
             if (this.DataContext is IShowDetailData && e.Parameter as ToNavigationParameter != null)
             {
                 var param = e.Parameter as ToNavigationParameter;
-                await(this.DataContext as IShowDetailData).Load(param.ShowId, param.Status);
+                await (this.DataContext as IShowDetailData).Load(param);
             }
         }
     }

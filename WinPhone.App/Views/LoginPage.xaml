@@ -5,11 +5,11 @@
     xmlns:local="using:WinPhone.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:login="using:WinPhone.App.ViewModels.Login"
     xmlns:views="using:WinPhone.App.Views"
+    xmlns:viewModels="using:WinPhone.App.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=login:LoginViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance Type=viewModels:LoginViewModel, IsDesignTimeCreatable=True}"
    DataContext="{Binding Login, Source={StaticResource Locator}}">
     <Grid x:Name="LayoutRoot">
 

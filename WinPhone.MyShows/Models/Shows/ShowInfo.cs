@@ -4,11 +4,13 @@ namespace WinPhone.MyShows.Models.Shows
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     using Newtonsoft.Json;
 
     //using WinPhone.Interfaces.Models.Shows;
 
+    [DataContract]
     public class ShowInfo : BaseShow/*, IShowInfo*/
     {
         [JsonProperty("year")]

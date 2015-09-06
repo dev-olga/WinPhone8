@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinPhone.App.Common.Converters.Main
+namespace WinPhone.App.Common.Converters
 {
+    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
-    using WinPhone.MyShows.Models.Shows;
-
-    internal class SelectionChangedEventAgrsToShowRatingInfoConveter : IValueConverter
+    internal class NotNullToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((parameter as BaseShow) ?? (new BaseShow())).Id;
+            return value != null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

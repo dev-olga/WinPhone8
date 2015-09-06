@@ -2,11 +2,12 @@
 {
     using System.Threading.Tasks;
 
-    using WinPhone.MyShows.Models.Profile;
-    using WinPhone.MyShows.Models.Shows;
+    using WinPhone.App.Models.ShowDetails;
 
     internal interface IShowDetailData
     {
-        Task Load(long showId, ShowStatus status);
+        Task Load(ToNavigationParameter inputParameters);
+
+        Task SaveState();
     }
 }

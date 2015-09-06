@@ -5,22 +5,21 @@ namespace WinPhone.App.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
 
     using WinPhone.App.Common;
-    using WinPhone.App.Common.Helpers;
     using WinPhone.App.Common.Offline;
     using WinPhone.App.Interfaces;
     using WinPhone.App.Models.ShowDetails;
     using WinPhone.App.ViewModels.ShowDetails;
-    using WinPhone.MyShows.Models.Shows;
 
     internal class ShowDetailsViewModel : BaseViewModel, IShowDetailData, IDisposable
     {
         private UserShow userShow;
 
         private bool isLoading;
+
+        private string title;
 
         private RelayCommand<int> updateEpisode;
 
@@ -39,6 +38,30 @@ namespace WinPhone.App.ViewModels
             //        });
         }
 
+        public string Title
+        {
+            get
+            {
+                return this.title;
+            }
+            set
+            {
+                if (this.title != value)
+                {
+                    this.title = value;
+                    this.NotifyPropertyChanged();
+                }
+            } 
+        }
+
+        public bool IsDataNotAvailable
+        {
+            get
+            {
+                return !this.IsLoading && this.UserShow == null;
+            }
+        }
+
         public bool IsLoading
         {
             get
@@ -52,6 +75,7 @@ namespace WinPhone.App.ViewModels
                 {
                     this.isLoading = value;
                     this.NotifyPropertyChanged();
+                    this.NotifyPropertyChanged(() => this.IsDataNotAvailable);
                 }
             }
         }
@@ -60,7 +84,7 @@ namespace WinPhone.App.ViewModels
         {
             get
             {
-                return this.userShow ?? (this.userShow = new UserShow());
+                return this.userShow;
             }
             set
             {
@@ -68,24 +92,9 @@ namespace WinPhone.App.ViewModels
                 {
                     this.userShow = value;
                     this.NotifyPropertyChanged();
+                    this.NotifyPropertyChanged(() => this.IsDataNotAvailable);
                 }
             }
-        }
-
-        private async void UserShowPropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == ExpressionHelper.GetFullPropertyName(() => this.UserShow.SelectedStatus))
-            {
-                await this.ApiProvider.ProfileService.UpdateShowStatusAsync(
-                    this.AuthorizationService.User.AuthorizationToken,
-                    this.UserShow.Show.Id,
-                    this.UserShow.SelectedStatus);
-            }
-
-            await OfflineProvider.GetOfflineManager().SaveAsync(
-                OfflineDataKeys.UserShow, 
-                this.UserShow,
-                GetStorageParameters(this.UserShow.Show.Id));
         }
 
         private static IDictionary<string, object> GetStorageParameters(long id)
@@ -93,46 +102,79 @@ namespace WinPhone.App.ViewModels
             return new Dictionary<string, object> { { "id", id } };
         }
 
-        public async Task Load(long showId, ShowStatus status)
+        public async Task Load(ToNavigationParameter inputParameters)
         {
+            this.Title = inputParameters.Title;
+            var showId = inputParameters.ShowId;
             this.IsLoading = true;
             var mananger = OfflineProvider.GetOfflineManager();
-            UserShow model;
+            UserShowData data = null;
             if (InternetHelper.IsNetworkAvailable())
             {
-                var show = await this.ApiProvider.ShowsService.GetShowWithEpisodesAsync(showId);
-                var episodes =
-                    (await
-                     this.ApiProvider.ProfileService.GetWatchedEpisodesAsync(
-                         this.AuthorizationService.User.AuthorizationToken,
-                         showId)).Data;
-                model = new UserShow();
-                model.Show = show;
-                model.Episodes =
-                        show.Episodes.Values.Select(
-                            episode =>
-                            new UserEpisode
-                                {
-                                    Episode = episode, 
-                                    IsWatched = episodes.Any(e => e.Id == episode.Id)
-                                }).ToList();
-
-                await mananger.SaveAsync(OfflineDataKeys.UserShow, model, GetStorageParameters(showId));
+                try
+                {
+                    var show = await this.ApiProvider.ShowsService.GetShowWithEpisodesAsync(showId);
+                    var episodes =
+                        (await
+                         this.ApiProvider.ProfileService.GetWatchedEpisodesAsync(
+                             this.AuthorizationService.User.AuthorizationToken,
+                             showId)).Data;
+                    data = new UserShowData()
+                               {
+                                   Show = show,
+                                   Status = inputParameters.Status,
+                                   Episodes = show.Episodes.Values.ToList(),
+                                   WatchedEpisodes = episodes.Select(e => e.Id).ToList()
+                               };
+                }
+                catch (Exception)
+                {
+                    //Todo handle
+                }
             }
             else
             {
-                model = await mananger.GetAsync<UserShow>(OfflineDataKeys.UserShow, GetStorageParameters(showId));
+                data = await mananger.GetAsync<UserShowData>(OfflineDataKeys.UserShow, GetStorageParameters(showId));
             }
 
-            this.UserShow = model;
-            this.UserShow.SelectedStatus = status;
-            this.UserShow.PropertyChanged += this.UserShowPropertyChangedEventHandler;
+            this.UserShow = data != null ? new UserShow(this, data) : null;
+
+            await this.SaveState();
             this.IsLoading = false;
+        }
+
+        public async Task SaveState()
+        {
+            var data = new UserShowData()
+            {
+                Show = this.UserShow.Show,
+                Status = this.UserShow.SelectedStatus,
+                Episodes = this.UserShow.Episodes.Select(e => e.Episode).ToList(),
+                WatchedEpisodes = this.UserShow.Episodes.Where(e => e.IsWatched).Select(e => e.Episode.Id).ToList()
+            };
+            var mananger = OfflineProvider.GetOfflineManager();
+            await mananger.SaveAsync(OfflineDataKeys.UserShow, data, GetStorageParameters(this.UserShow.Show.Id));
+        }
+
+        public async void UpdateShowStatusAsync()
+        {
+            try
+            {
+                await
+                    this.ApiProvider.ProfileService.UpdateShowStatusAsync(
+                        this.AuthorizationService.User.AuthorizationToken,
+                        this.UserShow.Show.Id,
+                        this.UserShow.SelectedStatus);
+            }
+            catch (Exception)
+            {
+                // ToDO Handle
+            }
         }
 
         public void Dispose()
         {
-            this.UserShow.PropertyChanged -= this.UserShowPropertyChangedEventHandler;
+            
         }
     }
 }

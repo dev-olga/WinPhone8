@@ -19,7 +19,7 @@
     <views:BasePage.Resources>
         <convertersMain:PivotItemToVisibilityConverter x:Key="PivotItemToVisibilityConverter"/>
         <convertersMain:PivotItemEventAgrsToPivotItemConveter x:Key="PivotItemEventAgrsToPivotItemConveter"/>
-        <convertersMain:SelectionChangedEventAgrsToShowRatingInfoConveter x:Key="SelectionChangedEventAgrsToShowRatingInfoConveter"/>
+        <convertersMain:SelectionChangedEventAgrsToBaseShowConveter x:Key="SelectionChangedEventAgrsToBaseShowConveter"/>
         <main:StaticPivotItems x:Key="StaticPivotItems"/>
     </views:BasePage.Resources>
     <Pivot x:Name="Pivot">
@@ -62,7 +62,7 @@
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="SelectionChanged">
                             <core:InvokeCommandAction Command="{Binding SelectShowCommand}"
-                                          InputConverter="{StaticResource SelectionChangedEventAgrsToShowRatingInfoConveter}"
+                                          InputConverter="{StaticResource SelectionChangedEventAgrsToBaseShowConveter}"
                                            InputConverterParameter="{Binding ElementName=Suggections, Path=SelectedItem}" >
                             </core:InvokeCommandAction>
                         </core:EventTriggerBehavior>

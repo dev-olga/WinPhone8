@@ -12,6 +12,7 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
-        <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>        
+        <converters:BooleanToListViewSelectionModeConverter x:Key="BooleanToListViewSelectionModeConverter"/>
+        <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
     </Application.Resources>
 </Application>

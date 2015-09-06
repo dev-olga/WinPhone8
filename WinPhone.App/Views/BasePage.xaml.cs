@@ -7,7 +7,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WinPhone.App.Views
 {
+    using System.Threading.Tasks;
+
     using WinPhone.App.Common;
+    using WinPhone.App.Interfaces;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -56,8 +59,9 @@ namespace WinPhone.App.Views
         /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
         /// <param name="e">Event data that provides an empty dictionary to be populated with
         /// serializable state.</param>
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        private async void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+            await this.SaveState();
         }
 
         #region NavigationHelper registration
@@ -80,14 +84,23 @@ namespace WinPhone.App.Views
             this.navigationHelper.OnNavigatedTo(e);
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected async override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            await this.SaveState();
             if (this.DataContext is IDisposable)
             {
                 (this.DataContext as IDisposable).Dispose();
             }
 
             this.navigationHelper.OnNavigatedFrom(e);
+        }
+
+        private async Task SaveState()
+        {
+            if (this.DataContext is IOfflineMode)
+            {
+                await(this.DataContext as IOfflineMode).SaveState();
+            }
         }
         #endregion
     }

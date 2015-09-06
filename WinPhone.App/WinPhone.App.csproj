@@ -96,7 +96,8 @@
     <Compile Include="Common\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Common\Converters\BooleanToListViewSelectionModeConverter.cs" />
     <Compile Include="Common\Converters\Main\PivotItemEventAgrsToPivotItemConveter.cs" />
-    <Compile Include="Common\Converters\Main\SelectionChangedEventAgrsToShowRatingInfoConveter.cs" />
+    <Compile Include="Common\Converters\Main\SelectionChangedEventAgrsToBaseShowConveter.cs" />
+    <Compile Include="Common\Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Common\Converters\ShowDetails\SeasonNameConverter.cs" />
     <Compile Include="Common\Converters\ShowDetails\ShowStatusConverter.cs" />
     <Compile Include="Common\Helpers\ExpressionHelper.cs" />
@@ -111,9 +112,11 @@
     <Compile Include="Interfaces\IApiProvider.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
     <Compile Include="Common\Offline\LocalStorage.cs" />
+    <Compile Include="Interfaces\IOfflineMode.cs" />
     <Compile Include="Models\ShowDetails\ToNavigationParameter.cs" />
     <Compile Include="Models\ShowDetails\UserEpisode.cs" />
     <Compile Include="Models\ShowDetails\UserShow.cs" />
+    <Compile Include="Models\ShowDetails\UserShowData.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Models\Main\MyShowsViewModel.cs" />
     <Compile Include="Services\ApiProvider.cs" />

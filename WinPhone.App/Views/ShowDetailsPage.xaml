@@ -8,8 +8,6 @@
     xmlns:ratingControl="using:JISoft.RatingControl"
     xmlns:viewModels="using:WinPhone.App.ViewModels"
     xmlns:showDetails1="using:WinPhone.App.Common.Converters.ShowDetails"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewModels:ShowDetailsViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding ShowDetails, Source={StaticResource Locator}}"
@@ -34,15 +32,21 @@
 
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="{Binding UserShow.Show.Title, Mode=OneWay}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" 
+            <TextBlock Text="{Binding Title, Mode=OneWay}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"
                        TextWrapping="WrapWholeWords"/>
+            
         </StackPanel>
+
+        <TextBlock Grid.Row="1" Visibility="{Binding IsDataNotAvailable, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter} }"
+                       Style="{ThemeResource HeaderTextBlockStyle}" Text="Show is not available">
+        </TextBlock>
 
         <ProgressRing Height="25" Width="25" IsActive="True" Grid.Row="1"
                       Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter} }"></ProgressRing>
+        
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="19,9.5,19,0">
-            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter} }">
+            <StackPanel Visibility="{Binding UserShow, Mode=OneWay, Converter={StaticResource NotNullToVisibilityConverter} }">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" MinWidth="60" />
@@ -81,7 +85,7 @@
                 
             <ComboBox 
                 Header="Status"
-                ItemsSource="{Binding UserShow.Statuses, Mode=OneTime}" 
+                ItemsSource="{Binding UserShow.Statuses, Mode=TwoWay}" 
                 SelectedItem="{Binding UserShow.SelectedStatus, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

@@ -10,6 +10,7 @@ namespace WinPhone.App.Models.ShowDetails
 
     public class ToNavigationParameter
     {
+        public string Title { get; set; }
         public long ShowId { get; set; }
         public ShowStatus Status { get; set; }
     }

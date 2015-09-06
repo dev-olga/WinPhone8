@@ -30,7 +30,7 @@ namespace WinPhone.App.ViewModels
 
         private readonly RelayCommand<PivotItems> selectPivotItemCommand;
 
-        private readonly RelayCommand<long> selectShowCommand;
+        private readonly RelayCommand<BaseShow> selectShowCommand;
 
         private ObservableCollection<ShowRatingInfo> suggestions;
 
@@ -90,20 +90,20 @@ namespace WinPhone.App.ViewModels
                     }
                     this.Processing = false;
                 });
-            this.selectShowCommand = new RelayCommand<long>(
-                showId =>
+            this.selectShowCommand = new RelayCommand<BaseShow>(
+                show =>
                     {
-                        if (showId != null)
+                        if (show == null)
                         {
-                            var param = new ToNavigationParameter
-                                            {
-                                                ShowId = showId,
-                                                Status =
-                                                    (this.MyShows.Shows.FirstOrDefault(
-                                                        s => s.Id == showId) ?? new UserShow()).Status
-                                            };
-                            (Window.Current.Content as Frame).Navigate(typeof(ShowDetailsPage), param);
+                            return;
                         }
+                        var param = new ToNavigationParameter
+                                        {
+                                            Title = show.Title,
+                                            ShowId = show.Id,
+                                            Status = (this.MyShows.Shows.FirstOrDefault(s => s.Id == show.Id) ?? new UserShow()).Status
+                                        };
+                        (Window.Current.Content as Frame).Navigate(typeof(ShowDetailsPage), param);
                     });
         }
 
@@ -123,7 +123,7 @@ namespace WinPhone.App.ViewModels
             }
         }
 
-        public RelayCommand<long> SelectShowCommand
+        public RelayCommand<BaseShow> SelectShowCommand
         {
             get
             {

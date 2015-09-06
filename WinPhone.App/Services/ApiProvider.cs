@@ -1,28 +1,27 @@
 ﻿namespace WinPhone.App.Services
 {
     using WinPhone.App.Interfaces;
-    using WinPhone.MyShows.Services;
 
     // TODO: replace all services with interfaces
     internal class ApiProvider : IApiProvider
     {
-        private static ProfileService profileService;
-        private static ShowsService showsService;
+        private static MyShows.Services.ProfileService profileService;
+        private static MyShows.Services.ShowsService showsService;
         private static MyShows.Services.AuthorizationService authorizationService;
 
-        public ProfileService ProfileService
+        public MyShows.Services.ProfileService ProfileService
         {
             get
             {
-                return profileService ?? new ProfileService();
+                return profileService ?? new MyShows.Services.ProfileService();
             }
         }
 
-        public ShowsService ShowsService
+        public MyShows.Services.ShowsService ShowsService
         {
             get
             {
-                return showsService ?? new ShowsService();
+                return showsService ?? new MyShows.Services.ShowsService();
             }
         }
 

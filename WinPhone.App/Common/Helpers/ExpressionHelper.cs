@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WinPhone.App.Common.Helpers
 {
@@ -11,29 +9,6 @@ namespace WinPhone.App.Common.Helpers
 
     public static class ExpressionHelper
     {
-        /// <summary>
-        /// extend provided expression with required property and returns new expression
-        /// </summary>
-        /// <typeparam name="T">return type of initial expression</typeparam>
-        /// <typeparam name="TProp">type of required property</typeparam>
-        /// <param name="expression">initial expression</param>
-        /// <param name="property">lambda with required property</param>
-        /// <returns>new expression</returns>
-        public static Expression<Func<TProp>> GetExpressionForProperty<T, TProp>(Expression<Func<T>> expression, Expression<Func<T, TProp>> property)
-        {
-            var elements = GetExpressionMembers(property).Reverse();
-            var innerExpression = elements.Aggregate(expression.Body, Expression.Property);
-            var nestedExpression = Expression.Lambda<Func<TProp>>(innerExpression, null);
-            return nestedExpression;
-        }
-
-        public static string GetFullPropertyName<T, TProp>(
-            Expression<Func<T>> expression,
-            Expression<Func<T, TProp>> property)
-        {
-            return GetFullPropertyName(GetExpressionForProperty(expression, property));
-        }
-
         /// <summary>
         /// Get dot separated full property name.
         /// For lambda a.B.C.Property value will be like "B.C.Property"
@@ -55,7 +30,7 @@ namespace WinPhone.App.Common.Helpers
         /// <param name="e">lambda expression</param>
         /// <returns>MemberExpression instance</returns>
         /// <exception cref="ArgumentException">throws exception if MemberExpression can't be retrieved.</exception>
-        public static MemberExpression GetMemberExpression<T>(Expression<T> e)
+        private static MemberExpression GetMemberExpression<T>(Expression<T> e)
         {
             var member = e.Body as MemberExpression;
             if (member != null)
@@ -83,14 +58,15 @@ namespace WinPhone.App.Common.Helpers
         /// <typeparam name="T">Expression type</typeparam>
         /// <param name="expression">expression itself</param>
         /// <returns>set of properties</returns>
-        public static MemberInfo[] GetExpressionMemberInfos<T>(Expression<T> expression)
+        private static MemberInfo[] GetExpressionMemberInfos<T>(Expression<T> expression)
         {
             var info = new List<MemberInfo>();
             var member = GetMemberExpression(expression);
             while (member != null)
             {
                 // we don't need first level
-                if (member.Expression as MemberExpression != null || member.Expression as ParameterExpression != null)
+                if (member.Expression as MemberExpression != null || member.Expression as ParameterExpression != null
+                    || member.Expression as ConstantExpression != null)
                 {
                     info.Add(member.Member);
                 }
@@ -110,18 +86,6 @@ namespace WinPhone.App.Common.Helpers
         private static string[] GetExpressionMembers<T>(Expression<T> expression)
         {
             return GetExpressionMemberInfos(expression).Select(m => m.Name).ToArray();
-        }
-
-        /// <summary>
-        /// Get property name from lambda expression
-        /// </summary>
-        /// <typeparam name="T">expression type</typeparam>
-        /// <param name="e">lambda expresion with property</param>
-        /// <returns>property name</returns>
-        public static string GetPropertyName<T>(Expression<T> e)
-        {
-            var member = GetMemberExpression(e);
-            return member.Member.Name;
         }
     }
 }

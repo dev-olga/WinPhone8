@@ -1,10 +1,13 @@
 ﻿namespace WinPhone.MyShows.Models.Shows
 {
+    using System.Runtime.Serialization;
+
     using Newtonsoft.Json;
 
     /// <summary>
     /// The base show.
     /// </summary>
+    [DataContract]
     public class BaseShow
     {
         [JsonProperty("id")]
